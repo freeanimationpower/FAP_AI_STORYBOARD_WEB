@@ -1,16 +1,20 @@
 # StoryboardPro AI — by FAP / fierroduque.com
 
+> **Accede directamente desde la web**: [freeanimationpower.org/tools/storyboard/](https://freeanimationpower.org/tools/storyboard/)  
+> El hub central de FAP incluye proxies PHP que reemplazan el servidor Node.js. Conecta tu API key y usa la herramienta sin instalar nada.
+
 <img width="1254" height="1254" alt="FAP AI STORYBOARD WEB" src="https://github.com/user-attachments/assets/25f6f90d-6c85-4a9a-a799-8ae551cb0e7a" />
-
-
 
 Aplicacion web que convierte un brief creativo en un storyboard visual de 4 escenas
 (2 planos por escena) con presentacion descargable en PDF.
 
 Parte del ecosistema **Free Animation Power (FAP)** junto con:
 
+- [FAP Web Hub](https://freeanimationpower.org) — Landing page oficial con todas las herramientas
 - [FAP Desktop](https://github.com/freeanimationpower/FAP_PC_WEB_VERSION) — Estudio de animacion 2D para PC (1920x1080, 60 pinceles, tabletas)
 - [FAP Mobile](https://github.com/freeanimationpower/FAP_MOBILE_WEB_VERSION) — Estudio de animacion 2D para moviles
+- [FAP Desktop App](https://github.com/freeanimationpower/FreeAnimationPower) — Aplicacion nativa Windows (C++20/Qt 6)
+- [FAP APK](https://github.com/freeanimationpower/FREE-ANIMATION-POWER-APK) — App Android nativa
 
 Arquitectura multi-proveedor: el usuario conecta su propia API key del servicio que
 prefiera, sin depender de un unico modelo.
@@ -23,7 +27,9 @@ prefiera, sin depender de un unico modelo.
 - **Generacion Visual**: Multi-proveedor con fallback en cascada (HF FLUX, DALL-E,
   Gemini Imagen, Pollinations gratis, Canvas placeholder)
 - **Exportacion**: jsPDF (CDN) — empaquetado 100% en el navegador del cliente
-- **Servidor**: Node.js unificado (puerto 3000) — estaticos + proxy texto + proxy imagenes
+- **Servidor**: Dos opciones disponibles:
+  - **Node.js** unificado (puerto 3000) — estaticos + proxy texto + proxy imagenes
+  - **PHP** (NUEVO) — proxies `api/chat.php` + `api/img.php` disponibles en el [FAP Web Hub](https://freeanimationpower.org). No requiere Node.js.
 
 ## Estructura de archivos
 
@@ -319,6 +325,14 @@ Completado. Imagenes: 6x HF FLUX.1 Schnell, 2x Pollinations.ai
 
 ## Deploy a produccion
 
+### Opcion 1: FAP Web Hub (recomendado — sin Node.js)
+
+Accede directamente desde [freeanimationpower.org/tools/storyboard/](https://freeanimationpower.org/tools/storyboard/).  
+El hub incluye proxies PHP (`api/chat.php` + `api/img.php`) que reemplazan el servidor Node.js.  
+Solo necesitas tu API key. Nada que instalar.
+
+### Opcion 2: Servidor Node.js propio
+
 Servidor unificado compatible con cualquier plataforma Node.js:
 
 | Plataforma | Comando |
@@ -334,7 +348,7 @@ Puerto configurable via variable de entorno `PORT` (defecto: 3000).
 
 © Todos los derechos reservados. Free Animation Power (FAP) por Eduardo Fierro Duque.
 
-- fierroduque.com
-- freeanimationpower.com
+- [freeanimationpower.org](https://freeanimationpower.org)
+- [fierroduque.com](https://www.fierroduque.com)
 - GitHub: [eduardofierroduque-sudo](https://github.com/eduardofierroduque-sudo)
 - GitHub FAP: [freeanimationpower](https://github.com/freeanimationpower)
