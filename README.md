@@ -1,5 +1,7 @@
 # StoryboardPro AI — by FAP / fierroduque.com
-<img width="1368" height="1202" alt="LOGO FREE ANIMATION POWER con bg" src="https://github.com/user-attachments/assets/26712e66-cdc4-4aa6-95e4-356728552729" />
+
+<img width="1254" height="1254" alt="FAP AI STORYBOARD WEB" src="https://github.com/user-attachments/assets/25f6f90d-6c85-4a9a-a799-8ae551cb0e7a" />
+
 
 
 Aplicacion web que convierte un brief creativo en un storyboard visual de 4 escenas
