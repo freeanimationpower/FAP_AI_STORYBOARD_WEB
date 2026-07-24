@@ -1,4 +1,4 @@
-# StoryboardPro AI — by FAP / fierroduque.com
+# Storyboard AI — by FAP / fierroduque.com
 
 > **Accede directamente desde la web**: [freeanimationpower.org/tools/storyboard/](https://freeanimationpower.org/tools/storyboard/)  
 > El hub central de FAP incluye proxies PHP que reemplazan el servidor Node.js. Conecta tu API key y usa la herramienta sin instalar nada.
@@ -6,7 +6,8 @@
 <img width="1254" height="1254" alt="FAP AI STORYBOARD WEB" src="https://github.com/user-attachments/assets/25f6f90d-6c85-4a9a-a799-8ae551cb0e7a" />
 
 Aplicacion web que convierte un brief creativo en un storyboard visual de 4 escenas
-(2 planos por escena) con presentacion descargable en PDF.
+(2 planos por escena) con presentacion descargable en PDF. **9 proveedores de texto
+y 10 de imagen.** Traducida a 4 idiomas.
 
 Parte del ecosistema **Free Animation Power (FAP)** junto con:
 
@@ -22,24 +23,12 @@ prefiera, sin depender de un unico modelo.
 ## Arquitectura
 
 - **Frontend**: HTML5 + Tailwind CSS (CDN) + JavaScript Vanilla (ES5)
-- **Tema visual**: Tema oscuro FAP — fondo `#0d0d10`, acento naranja `#ff6d00`
+- **Tema visual**: FAP corporativo — fondo amarillo `#ffdc00`, cards blancas, acento naranja `#ff4200`, fuentes Outfit + Plus Jakarta Sans
+- **Idiomas**: Ingles, Español, Francés, Portugués — selector en vivo sin recargar
 - **IA Narrativa**: Multi-proveedor — API OpenAI-compatible generica + Gemini nativo
-- **Generacion Visual**: Multi-proveedor con fallback en cascada (HF FLUX, DALL-E,
-  Gemini Imagen, Pollinations gratis, Canvas placeholder)
+- **Generacion Visual**: Multi-proveedor con fallback en cascada (Stability SD3, HF FLUX, DALL-E, Gemini Imagen, Pollinations gratis, Canvas placeholder)
 - **Exportacion**: jsPDF (CDN) — empaquetado 100% en el navegador del cliente
-- **Servidor**: Dos opciones disponibles:
-  - **Node.js** unificado (puerto 3000) — estaticos + proxy texto + proxy imagenes
-  - **PHP** (NUEVO) — proxies `api/chat.php` + `api/img.php` disponibles en el [FAP Web Hub](https://freeanimationpower.org). No requiere Node.js.
-
-## Estructura de archivos
-
-```
-/
-  server.js     -- Servidor unificado
-  index.html    -- Interfaz con panel de configuracion de APIs
-  app.js        -- Logica completa
-  README.md     -- Documentacion
-```
+- **Servidor**: Node.js unificado — estaticos + proxy texto + proxy imagenes. Soporte `multipart/form-data` para Stability AI.
 
 ## Inicio rapido
 
@@ -50,51 +39,43 @@ node server.js
 # 2. Abrir navegador
 http://localhost:3000
 
-# 3. Configurar APIs
+# 3. Seleccionar idioma (ES / FR / PT) en la esquina superior derecha
+
+# 4. Configurar APIs
 Click en "Configurar APIs" > elegir proveedor > pegar API key > Guardar
 
-# 4. Escribir brief y generar
+# 5. Escribir brief y generar
 ```
 
 ## Proveedores soportados
 
-### Texto (8 proveedores)
+### Texto (9 proveedores)
 
-| Proveedor | Modelo sugerido | Formato |
-|-----------|-----------------|---------|
-| OpenAI (GPT-4o) | gpt-4o | OpenAI |
-| Google Gemini | gemini-2.0-flash | Gemini nativo |
-| OpenCode Zen | deepseek-v4-flash-free | OpenAI |
-| DeepSeek | deepseek-chat | OpenAI |
-| Groq | llama-3.3-70b-versatile | OpenAI |
-| Together AI | Llama-3.3-70B-Instruct-Turbo | OpenAI |
-| OpenRouter | openai/gpt-4o | OpenAI |
-| Personalizado | Cualquier endpoint | OpenAI |
+| Proveedor | Modelo sugerido | Formato | Tipo |
+|-----------|-----------------|---------|:---:|
+| OpenAI (GPT-4o) | gpt-4o | OpenAI | Pago |
+| Mistral AI | mistral-large-latest | OpenAI | Gratis/Pago |
+| Google Gemini | gemini-2.0-flash | Gemini nativo | Gratis |
+| OpenCode Zen | deepseek-v4-flash-free | OpenAI | Gratis |
+| DeepSeek | deepseek-chat | OpenAI | Pago |
+| Groq | llama-3.3-70b-versatile | OpenAI | Gratis |
+| Together AI | Llama-3.3-70B-Instruct-Turbo | OpenAI | Gratis |
+| OpenRouter | openai/gpt-4o | OpenAI | Pago |
+| Personalizado | Cualquier endpoint | OpenAI | — |
 
-### Imagenes (8 proveedores)
+### Imagenes (10 proveedores)
 
-| Proveedor | Requiere key | Calidad |
-|-----------|:---:|:---:|
-| Google Gemini Imagen | Si (Gemini key) | Muy alta |
-| HuggingFace FLUX.1 Schnell | Si (HF Token) | Alta |
-| HuggingFace FLUX.1 Dev | Si (HF Token) | Muy alta |
-| HuggingFace SDXL Turbo | Si (HF Token) | Alta |
-| OpenAI DALL-E 3 | Si (OpenAI Key) | Muy alta |
-| OpenAI DALL-E 2 | Si (OpenAI Key) | Alta |
-| Pollinations.ai | No (gratis) | Media |
-| Personalizado | Depende | Variable |
-
-## Flujo de generacion
-
-```
-Brief
-  └→ API de Texto (guion JSON: 4 escenas x 2 planos)
-       └→ API de Imagenes (8 imagenes)
-            ├─ Proveedor configurado (con key)
-            ├─ Pollinations.ai (fallback gratuito automatico)
-            └─ Canvas placeholder (ultimo recurso)
-                 └→ PDF descargable con jsPDF
-```
+| Proveedor | Requiere key | Calidad | Tipo |
+|-----------|:---:|:---:|:---:|
+| Stability AI SD3 | Si | Muy alta | Gratis (25 creditos) |
+| Google Gemini Imagen | Si (Gemini key) | Muy alta | Gratis |
+| HuggingFace FLUX.1 Schnell | Si (HF Token) | Alta | Gratis |
+| HuggingFace FLUX.1 Dev | Si (HF Token) | Muy alta | Gratis |
+| HuggingFace SDXL Turbo | Si (HF Token) | Alta | Gratis |
+| OpenAI DALL-E 3 | Si (OpenAI Key) | Muy alta | Pago |
+| OpenAI DALL-E 2 | Si (OpenAI Key) | Alta | Pago |
+| Pollinations.ai | No | Media | Gratis |
+| Personalizado | Depende | Variable | — |
 
 ## Guia de APIs: como obtener tus claves
 
@@ -118,68 +99,54 @@ del tier gratuito.
 | 3 | Click en **"Get API key"** (esquina superior izquierda) |
 | 4 | Click en **"Create API key"** > selecciona un proyecto (o crea uno nuevo) |
 | 5 | Copia la key (formato: `AIzaSy...`) |
-| 6 | En StoryboardPro: |
-| | - **API de Texto**: proveedor `Google Gemini`, pega la key, modelo `gemini-2.0-flash` |
-| | - **API de Imagenes**: proveedor `Google Gemini (Imagen)`, misma key |
+| 6 | En Storyboard AI: **API de Texto** > `Google Gemini`, modelo `gemini-2.0-flash` |
+| 7 | Para imagenes: **API de Imagenes** > `Google Gemini (Imagen)`, misma key |
 
-**Limites gratuitos (cuota por minuto/dia):**
-- Gemini 2.0 Flash: ~1500 peticiones/dia
-- Imagen: ~20-50 imagenes/dia
-
-**Calidad esperada:**
-- Texto: narrativas correctas, entiende bien el espanol
-- Imagenes: buena calidad en estilo storyboard
+**Limites gratuitos:** ~1500 peticiones/dia texto, ~20-50 imagenes/dia.
 
 ---
 
-#### 2. OpenCode Zen — texto con DeepSeek
-
-**No necesita registro.** Usa la key publica del servicio.
+#### 2. Mistral AI — texto (La Plateforme)
 
 | Paso | Accion |
 |------|--------|
-| 1 | En StoryboardPro, selecciona proveedor `OpenCode Zen` |
-| 2 | Usa esta key publica (o genera la tuya en [opencode.ai](https://opencode.ai)): |
-| | `sk-veyjiD9KJveVJzMdTh0TC2gByeXmMBv5L9YazoTZHLiqc17d4LY` |
-| 3 | Modelo sugerido: `deepseek-v4-flash-free` |
+| 1 | Entra a [console.mistral.ai](https://console.mistral.ai/) |
+| 2 | Crea cuenta (Google/GitHub/Microsoft) |
+| 3 | Ve a **API Keys** > **Create new key** |
+| 4 | Copia la key (formato: `...`) |
+| 5 | En Storyboard AI: **API de Texto** > `Mistral AI`, modelo `mistral-large-latest` |
 
-**Limites:** ~50-100 peticiones/dia (key compartida)
-
-**Calidad esperada:** buena para texto tecnico, JSON estructurado.
+**Limites gratuitos:** rate-limit generoso en tier gratuito (La Plateforme).
+**Calidad:** Excelente en JSON estructurado y textos multilingue. Muy rapido.
 
 ---
 
-#### 3. HuggingFace FLUX.1 Schnell — imagenes
+#### 3. Stability AI — imagenes (25 creditos gratis)
+
+| Paso | Accion |
+|------|--------|
+| 1 | Entra a [platform.stability.ai](https://platform.stability.ai/) |
+| 2 | Crea cuenta (Google/GitHub/email) |
+| 3 | Ve a **Account > API Keys** |
+| 4 | Copia la key (formato: `sk-...`) |
+| 5 | En Storyboard AI: **API de Imagenes** > `Stability AI SD3` |
+
+**Limites gratuitos:** 25 creditos al registrarte. Cada imagen gasta ~0.3 creditos.
+**Calidad:** SD3 genera imagenes de muy alta calidad con excelente seguimiento del prompt.
+
+---
+
+#### 4. HuggingFace FLUX.1 — imagenes
 
 | Paso | Accion |
 |------|--------|
 | 1 | Entra a [huggingface.co](https://huggingface.co/) y crea cuenta gratis |
 | 2 | Ve a [Settings > Access Tokens](https://huggingface.co/settings/tokens) |
-| 3 | Click en **"Create new token"** > tipo `Read` > dale un nombre |
+| 3 | Click en **"Create new token"** > tipo `Read` |
 | 4 | Copia el token (formato: `hf_...`) |
-| 5 | En StoryboardPro, API de Imagenes: proveedor `HuggingFace FLUX.1 Schnell` |
-| 6 | Pega el token como API key |
+| 5 | En Storyboard AI: **API de Imagenes** > `HuggingFace FLUX.1 Schnell` |
 
-**Limites gratuitos:** ~30-50 imagenes/dia, modelo se carga bajo demanda (primeras
-imagenes pueden tardar 10-30s mientras carga).
-
-**Calidad esperada:** imagenes de alta calidad en estilo storyboard, buen seguimiento
-de prompt. No es fotorrealista — ideal para bocetos estilo comic/ilustracion.
-
----
-
-#### 4. Pollinations.ai — imagenes (sin registro, sin key)
-
-| Paso | Accion |
-|------|--------|
-| 1 | En StoryboardPro, API de Imagenes: proveedor `Pollinations.ai (gratis)` |
-| 2 | No necesita API key — funciona inmediatamente |
-
-**Limites:** ilimitado pero lento (~30-120s por imagen en horas pico). Calidad
-media-baja, util como fallback.
-
-**Calidad esperada:** resultados variables. Imagenes a veces genericas o poco
-detalladas. Bueno para pruebas rapidas o como respaldo.
+**Limites:** ~30-50 imagenes/dia. Modelo carga bajo demanda (10-30s la primera).
 
 ---
 
@@ -189,15 +156,17 @@ detalladas. Bueno para pruebas rapidas o como respaldo.
 |------|--------|
 | 1 | Entra a [console.groq.com](https://console.groq.com/) |
 | 2 | Inicia sesion con Google/GitHub |
-| 3 | Ve a **API Keys** > **Create API Key** |
-| 4 | Copia la key (formato: `gsk_...`) |
-| 5 | En StoryboardPro, API de Texto: proveedor `Groq` |
-| 6 | Pega la key, modelo: `llama-3.3-70b-versatile` |
+| 3 | Ve a **API Keys** > **Create API Key** (formato: `gsk_...`) |
+| 4 | En Storyboard AI: **API de Texto** > `Groq`, modelo `llama-3.3-70b-versatile` |
 
-**Limites gratuitos:** generosos (~30 peticiones/minuto, ~1000/dia).
+**Limites:** ~30 req/minuto, ~1000/dia. Muy rapido.
 
-**Calidad esperada:** muy rapido, buen JSON estructurado. Narrativas decentes
-aunque menos creativo que Gemini o GPT-4o.
+---
+
+#### 6. Pollinations.ai — imagenes (sin registro, sin key)
+
+No necesita API key. Selecciona `Pollinations.ai (gratis)` en el panel de imagen.
+Ilimitado pero lento (~30-120s por imagen). Util como fallback automatico.
 
 ---
 
@@ -205,29 +174,17 @@ aunque menos creativo que Gemini o GPT-4o.
 
 #### OpenAI — GPT-4o + DALL-E 3
 
-La membresia de ChatGPT Plus ($20/mes) NO incluye API. La API se paga por uso
-(creditos prepago, minimo $5).
+Creditos prepago, minimo $5.
 
 | Paso | Accion |
 |------|--------|
 | 1 | Entra a [platform.openai.com](https://platform.openai.com/) |
-| 2 | Inicia sesion o crea cuenta |
-| 3 | Ve a [Settings > Billing](https://platform.openai.com/settings/organization/billing) |
-| 4 | Agrega metodo de pago y compra creditos (minimo $5) |
-| 5 | Ve a [API Keys](https://platform.openai.com/api-keys) > **Create new secret key** |
-| 6 | Copia la key (formato: `sk-proj-...`) |
-| 7 | En StoryboardPro: |
-| | - **API de Texto**: proveedor `OpenAI (GPT-4o)`, modelo `gpt-4o` |
-| | - **API de Imagenes**: proveedor `OpenAI DALL-E 3` (misma key) |
+| 2 | Ve a [Billing](https://platform.openai.com/settings/organization/billing) > agrega metodo de pago ($5 min) |
+| 3 | Ve a [API Keys](https://platform.openai.com/api-keys) > **Create new secret key** |
+| 4 | Formato: `sk-proj-...` |
+| 5 | Storyboard AI: Texto > `OpenAI (GPT-4o)`, Imagen > `OpenAI DALL-E 3` (misma key) |
 
-**Costos aprox (por storyboard de 8 imagenes):**
-- GPT-4o texto: ~$0.01-0.05 por generacion
-- DALL-E 3: ~$0.40 por storyboard ($0.05 x 8 imagenes)
-- Total: ~$0.45 por storyboard completo
-
-**Calidad esperada:** la mejor combinacion posible. GPT-4o genera los guiones
-mas coherentes y creativos. DALL-E 3 produce las imagenes mas detalladas y con
-mejor seguimiento de instrucciones. Calidad profesional.
+**Costos:** ~$0.45 por storyboard completo (8 imagenes). **Calidad profesional.**
 
 ---
 
@@ -236,66 +193,49 @@ mejor seguimiento de instrucciones. Calidad profesional.
 | Paso | Accion |
 |------|--------|
 | 1 | Entra a [platform.deepseek.com](https://platform.deepseek.com/) |
-| 2 | Crea cuenta y ve a **API Keys** |
-| 3 | Agrega saldo (minimo ~$2) |
-| 4 | Copia la key (formato: `sk-...`) |
-| 5 | En StoryboardPro, API de Texto: proveedor `DeepSeek`, modelo `deepseek-chat` |
+| 2 | Crea cuenta > **API Keys** > agrega saldo (~$2 min) |
+| 3 | Storyboard AI: Texto > `DeepSeek`, modelo `deepseek-chat` |
 
-**Costos aprox:** ~$0.001 por generacion. Extremadamente barato.
-
-**Calidad esperada:** muy buena relacion calidad/precio. Comparable a GPT-4o en
-tareas de JSON estructurado. Buen soporte multilingue.
+**Costos:** ~$0.001 por generacion. Extremadamente barato. Comparable a GPT-4o.
 
 ---
 
-#### OpenRouter — acceso unificado a +200 modelos
-
-OpenRouter es un intermediario: una sola cuenta, una sola key, acceso a modelos
-de OpenAI, Anthropic, Meta, Google y mas. Pagas por uso.
+#### OpenRouter — acceso a +200 modelos, 1 sola key
 
 | Paso | Accion |
 |------|--------|
 | 1 | Entra a [openrouter.ai](https://openrouter.ai/) |
-| 2 | Crea cuenta y ve a **Keys** |
-| 3 | Crea una key (formato: `sk-or-v1-...`) |
-| 4 | Agrega creditos (minimo $5) |
-| 5 | En StoryboardPro, API de Texto: proveedor `OpenRouter` |
-| 6 | Pega la key. Puedes usar cualquier modelo: |
-| | - `openai/gpt-4o` (el mejor para guiones) |
-| | - `anthropic/claude-3.5-sonnet` (muy creativo) |
-| | - `google/gemini-2.0-flash-001` (bueno y barato) |
-| | - `meta-llama/llama-3.3-70b-instruct` (gratuito en OpenRouter) |
-
-**Costos aprox:** varian por modelo. GPT-4o via OpenRouter ~$5/M tokens.
-Modelos gratuitos disponibles (Meta Llama 3, Gemma, etc).
-
-**Calidad esperada:** depende del modelo elegido. Con GPT-4o o Claude, calidad
-profesional. Con modelos gratuitos, calidad media-alta.
+| 2 | Crea cuenta > **Keys** > agrega creditos ($5 min) |
+| 3 | Storyboard AI: Texto > `OpenRouter` |
+| 4 | Modelos recomendados: `openai/gpt-4o`, `anthropic/claude-3.5-sonnet`, `google/gemini-2.0-flash-001` |
 
 ---
 
 ### Tabla comparativa de calidad
 
-#### Texto (generacion de guion)
+#### Texto
 
 | Proveedor + Modelo | Creatividad | JSON | Espanol | Costo |
 |-------------------|:---:|:---:|:---:|:---:|
-| OpenAI GPT-4o | ***** | ***** | ***** | $$ |
-| Google Gemini 2.0 Flash | **** | **** | **** | Gratis |
-| DeepSeek Chat | **** | ***** | *** | $ |
-| Groq Llama 3.3 70B | *** | **** | *** | Gratis |
-| OpenCode Zen DeepSeek V4 | *** | *** | *** | Gratis |
+| OpenAI GPT-4o | ★★★★★ | ★★★★★ | ★★★★★ | $$ |
+| Mistral Large | ★★★★ | ★★★★★ | ★★★★ | Gratis |
+| Google Gemini 2.0 Flash | ★★★★ | ★★★★ | ★★★★ | Gratis |
+| DeepSeek Chat | ★★★★ | ★★★★★ | ★★★ | $ |
+| Groq Llama 3.3 70B | ★★★ | ★★★★ | ★★★ | Gratis |
 
 #### Imagenes
 
 | Proveedor + Modelo | Detalle | Prompt | Estilo | Costo |
 |-------------------|:---:|:---:|:---:|:---:|
-| OpenAI DALL-E 3 | ***** | ***** | Foto/ilust | $$ |
-| Google Gemini Imagen | ***** | **** | Foto/ilust | Gratis |
-| HF FLUX.1 Dev | ***** | **** | Ilust/arte | Gratis |
-| HF FLUX.1 Schnell | **** | *** | Ilust/arte | Gratis |
-| HF SDXL Turbo | *** | ** | Ilust/arte | Gratis |
-| Pollinations.ai | ** | * | Variable | Gratis |
+| Stability AI SD3 | ★★★★★ | ★★★★ | Foto/ilust | Gratis* |
+| OpenAI DALL-E 3 | ★★★★★ | ★★★★★ | Foto/ilust | $$ |
+| Google Gemini Imagen | ★★★★★ | ★★★★ | Foto/ilust | Gratis |
+| HF FLUX.1 Dev | ★★★★★ | ★★★★ | Ilust/arte | Gratis |
+| HF FLUX.1 Schnell | ★★★★ | ★★★ | Ilust/arte | Gratis |
+| HF SDXL Turbo | ★★★ | ★★ | Ilust/arte | Gratis |
+| Pollinations.ai | ★★ | ★ | Variable | Gratis |
+
+*25 creditos gratis al registrarse en Stability AI.
 
 ---
 
@@ -305,15 +245,15 @@ Cada error indica exactamente que API fallo y el motivo:
 
 - `API de Texto (OpenAI): API key invalida o sin creditos.`
 - `API de Texto (Gemini): Limite de uso alcanzado.`
-- `API de Imagenes (HF FLUX): sin respuesta. Cambiando a Pollinations gratis...`
+- `API de Imagenes (Stability AI SD3): sin respuesta. Cambiando a Pollinations...`
 
 Status en tiempo real durante generacion:
 
 ```
-Imagen 1/8: HF FLUX.1 Schnell
+Imagen 1/8: Stability AI SD3
 Imagen 2/8: Pollinations.ai (gratis)
 ...
-Completado. Imagenes: 6x HF FLUX.1 Schnell, 2x Pollinations.ai
+Completado. Imagenes: 6x Stability AI SD3, 2x Pollinations.ai
 ```
 
 ## Seguridad
@@ -321,22 +261,12 @@ Completado. Imagenes: 6x HF FLUX.1 Schnell, 2x Pollinations.ai
 - Las API keys se guardan en **localStorage** del navegador del usuario
 - El servidor proxy **no almacena** ninguna key — solo forwardea peticiones
 - Las keys nunca se envian a servidores de terceros no configurados por el usuario
-- El token nunca se incluye en la URL del remote de git
 
 ## Deploy a produccion
 
-### Opcion 1: FAP Web Hub (recomendado — sin Node.js)
-
-Accede directamente desde [freeanimationpower.org/tools/storyboard/](https://freeanimationpower.org/tools/storyboard/).  
-El hub incluye proxies PHP (`api/chat.php` + `api/img.php`) que reemplazan el servidor Node.js.  
-Solo necesitas tu API key. Nada que instalar.
-
-### Opcion 2: Servidor Node.js propio
-
-Servidor unificado compatible con cualquier plataforma Node.js:
-
 | Plataforma | Comando |
 |-----------|---------|
+| **FAP Web Hub** | [freeanimationpower.org/tools/storyboard](https://freeanimationpower.org/tools/storyboard) |
 | Render.com | `node server.js` |
 | Railway | `node server.js` |
 | Fly.io | `node server.js` |
