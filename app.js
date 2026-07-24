@@ -18,6 +18,12 @@ const TEXT_PROVIDERS = {
         model: 'gpt-4o',
         supportsJsonMode: true
     },
+    mistral: {
+        name: 'Mistral AI',
+        url: 'https://api.mistral.ai/v1/chat/completions',
+        model: 'mistral-large-latest',
+        supportsJsonMode: true
+    },
     gemini: {
         name: 'Google Gemini',
         url: 'https://generativelanguage.googleapis.com/v1beta/models/',
@@ -64,6 +70,19 @@ const TEXT_PROVIDERS = {
 };
 
 const IMAGE_PROVIDERS = {
+    stability_sd3: {
+        name: 'Stability AI SD3',
+        method: 'POST',
+        formatPayload: function(prompt) {
+            return {
+                url: 'https://api.stability.ai/v2beta/stable-image/generate/sd3',
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + this._key, 'Accept': 'image/*' },
+                bodyType: 'form',
+                body: { prompt: prompt, output_format: 'jpeg', aspect_ratio: '16:9' }
+            };
+        }
+    },
     gemini_imagen: {
         name: 'Google Gemini (Imagen)',
         method: 'POST',

@@ -136,7 +136,7 @@ async function handleImageProxy(req, res) {
     try {
         const rawBody = await parseBody(req);
         const payload = JSON.parse(rawBody.toString());
-        const { url: targetUrl, method, headers, body } = payload;
+        const { url: targetUrl, method, headers, body, bodyType } = payload;
 
         if (!targetUrl) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
@@ -146,10 +146,27 @@ async function handleImageProxy(req, res) {
 
         const reqMethod = method || 'POST';
         const reqHeaders = headers || {};
-        const reqBody = body ? JSON.stringify(body) : null;
+        var reqBody = null;
 
-        if (reqBody && !reqHeaders['Content-Type']) {
-            reqHeaders['Content-Type'] = 'application/json';
+        if (bodyType === 'form' && body) {
+            var boundary = '----FormBoundary' + Math.random().toString(36).slice(2);
+            var parts = [];
+            var keys = Object.keys(body);
+            for (var i = 0; i < keys.length; i++) {
+                var k = keys[i];
+                parts.push('--' + boundary);
+                parts.push('Content-Disposition: form-data; name="' + k + '"');
+                parts.push('');
+                parts.push(body[k]);
+            }
+            parts.push('--' + boundary + '--');
+            reqBody = parts.join('\r\n');
+            reqHeaders['Content-Type'] = 'multipart/form-data; boundary=' + boundary;
+        } else if (body) {
+            reqBody = JSON.stringify(body);
+            if (!reqHeaders['Content-Type']) {
+                reqHeaders['Content-Type'] = 'application/json';
+            }
         }
 
         const result = await proxyRequest(targetUrl, reqMethod, reqHeaders, reqBody);
