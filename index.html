@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StoryboardPro — FAP / fierroduque.com</title>
+    <title>Storyboard AI — Free Animation Power</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
@@ -14,7 +14,9 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        mono: ['JetBrains Mono', 'Courier New', 'monospace'],
+                        display: ['Outfit', 'Plus Jakarta Sans', 'sans-serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     },
                 },
             },
@@ -22,127 +24,152 @@
     </script>
     <style>
         :root {
-            --bg-body: #0d0d10;
-            --bg-primary: #15171c;
-            --bg-secondary: #1a1d24;
-            --bg-tertiary: #252830;
-            --text-primary: #e8ecf0;
-            --text-secondary: #a0a8b0;
-            --accent: #ff6d00;
-            --accent-light: #ffab40;
-            --border: #3a3d44;
-            --green: #4caf50;
+            --yellow:    #ffdc00;
+            --yellow2:   #ffe94d;
+            --yellow3:   #ffe066;
+            --yellow4:   #fff3b3;
+            --ink:       #070706;
+            --ink2:      #1a1a1a;
+            --ink3:      #333333;
+            --white:     #ffffff;
+            --cream:     #fefcf0;
+            --warm:      #faf6e8;
+            --border:    #ede4c0;
+            --border2:   #e8dca0;
+            --muted:     #6b6500;
+            --muted2:    #938c00;
+            --orange:    #ff4200;
+            --error:     #cc2200;
+            --success:   #1a7730;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
+        html { background: var(--yellow); }
+
         body {
-            background: var(--bg-body);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--yellow);
+            color: var(--ink);
             min-height: 100vh;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            color: var(--text-primary);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
         }
 
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-tertiary); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--accent-light); }
+        h1, h2, h3, h4, .display {
+            font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--muted2); }
 
         .card-board {
-            background: var(--bg-primary);
-            border-radius: 12px;
+            background: var(--white);
+            border-radius: 24px;
             border: 1px solid var(--border);
             overflow: hidden;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+            box-shadow: 0 2px 20px rgba(7,7,6,0.04), 0 0 0 1px rgba(0,0,0,0.02);
         }
 
-        .clapper-stripe {
+        .accent-stripe {
             height: 6px;
-            background: var(--accent);
+            background: var(--orange);
+        }
+
+        .logo-header {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
         }
 
         .title-film {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-            letter-spacing: -0.3px;
-            line-height: 1.2;
+            font-family: 'Outfit', sans-serif;
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--ink);
+            letter-spacing: -0.02em;
+            line-height: 1.15;
         }
 
         .desc-film {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            font-size: 12px;
-            font-weight: 400;
-            color: var(--text-secondary);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
             line-height: 1.7;
         }
 
         .label-film {
             display: block;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 10px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            letter-spacing: 0.5px;
+            font-weight: 700;
+            color: var(--muted);
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
         .input-film {
             width: 100%;
-            background: var(--bg-tertiary);
+            background: var(--warm);
             border: 1.5px solid var(--border);
-            border-radius: 8px;
-            padding: 12px 14px;
+            border-radius: 14px;
+            padding: 14px 18px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
-            color: var(--text-primary);
+            color: var(--ink);
             resize: none;
             line-height: 1.65;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.2s var(--ease-out-expo);
+            outline: none;
         }
 
         .input-film::placeholder {
-            color: #555860;
+            color: var(--muted2);
             font-family: 'JetBrains Mono', monospace;
         }
 
         .input-film:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(255,109,0,0.15);
+            border-color: var(--ink);
+            box-shadow: 0 0 0 4px rgba(7,7,6,0.05);
         }
 
         .input-film:disabled {
-            opacity: 0.4;
+            opacity: 0.45;
             cursor: not-allowed;
+            background: #f5f2e0;
         }
 
         .btn-film {
             width: 100%;
-            background: var(--accent);
+            background: var(--ink);
             border: none;
-            border-radius: 8px;
-            padding: 14px 24px;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            border-radius: 50px;
+            padding: 15px 28px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 13px;
-            font-weight: 700;
-            color: #fff;
+            font-weight: 800;
+            color: var(--yellow);
             cursor: pointer;
-            letter-spacing: 0.3px;
-            transition: all 0.2s ease;
+            letter-spacing: 0.02em;
+            transition: all 0.2s var(--ease-out-expo);
         }
 
         .btn-film:hover {
-            background: var(--accent-light);
+            background: var(--ink2);
             transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(255,109,0,0.25);
+            box-shadow: 0 6px 20px rgba(7,7,6,0.12);
         }
 
         .btn-film:active {
             transform: translateY(0);
-            background: #e05500;
+            background: var(--ink);
         }
 
         .btn-film:disabled {
@@ -156,10 +183,10 @@
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 14px 18px;
-            background: var(--bg-tertiary);
+            padding: 14px 20px;
+            background: var(--warm);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: 14px;
         }
 
         .loader-prog {
@@ -172,7 +199,7 @@
 
         .loader-prog-fill {
             height: 100%;
-            background: var(--accent);
+            background: var(--orange);
             border-radius: 2px;
             animation: glide 2s ease-in-out infinite;
             width: 0%;
@@ -192,49 +219,50 @@
         }
 
         .footer-film {
-            font-size: 10px;
-            color: #555860;
-            letter-spacing: 1px;
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 500;
+            letter-spacing: 0.03em;
         }
 
         /* ===== CONFIG PANEL ===== */
         .config-toggle {
             width: 100%;
             background: transparent;
-            border: 1.5px dashed var(--border);
-            border-radius: 8px;
+            border: 1.5px dashed var(--border2);
+            border-radius: 14px;
             padding: 10px 18px;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 11px;
-            font-weight: 600;
-            color: var(--text-secondary);
+            font-weight: 700;
+            color: var(--muted);
             cursor: pointer;
-            letter-spacing: 0.5px;
-            transition: all 0.2s ease;
+            letter-spacing: 0.03em;
+            transition: all 0.2s var(--ease-out-expo);
             margin-bottom: 6px;
         }
 
         .config-toggle:hover {
-            border-color: var(--accent);
-            color: var(--text-primary);
-            background: rgba(255,109,0,0.05);
+            border-color: var(--ink);
+            color: var(--ink);
+            background: var(--warm);
         }
 
         .config-panel {
-            background: var(--bg-secondary);
+            background: var(--warm);
             border: 1px solid var(--border);
-            border-radius: 10px;
+            border-radius: 18px;
             padding: 18px;
             margin-bottom: 16px;
         }
 
         .config-section-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 10px;
-            font-weight: 700;
-            color: var(--accent-light);
-            letter-spacing: 1px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--orange);
+            letter-spacing: 0.08em;
             text-transform: uppercase;
             padding-bottom: 8px;
             margin-bottom: 12px;
@@ -243,93 +271,112 @@
 
         .select-film {
             width: 100%;
-            background: var(--bg-tertiary);
+            background: var(--white);
             border: 1.5px solid var(--border);
-            border-radius: 8px;
-            padding: 10px 14px;
+            border-radius: 14px;
+            padding: 11px 14px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 12px;
-            color: var(--text-primary);
+            color: var(--ink);
             cursor: pointer;
-            transition: border-color 0.2s ease;
+            transition: border-color 0.2s var(--ease-out-expo);
             appearance: none;
             -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23a0a8b0' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%236b6500' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 12px center;
+            background-position: right 14px center;
+            outline: none;
         }
 
         .select-film:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 2px rgba(255,109,0,0.15);
+            border-color: var(--ink);
+            box-shadow: 0 0 0 4px rgba(7,7,6,0.05);
         }
 
         .btn-config {
-            padding: 8px 16px;
-            border-radius: 6px;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            padding: 9px 20px;
+            border-radius: 50px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 11px;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
-            letter-spacing: 0.3px;
+            transition: all 0.2s var(--ease-out-expo);
+            letter-spacing: 0.02em;
         }
 
         .btn-config-save {
-            background: var(--accent);
-            color: #fff;
+            background: var(--ink);
+            color: var(--yellow);
             border: none;
         }
 
         .btn-config-save:hover {
-            background: var(--accent-light);
+            background: var(--ink2);
         }
 
         .btn-config-clear {
             background: transparent;
-            color: var(--text-secondary);
+            color: var(--muted);
             border: 1.5px solid var(--border);
         }
 
         .btn-config-clear:hover {
-            border-color: var(--text-secondary);
-            color: var(--text-primary);
+            border-color: var(--ink);
+            color: var(--ink);
+            background: var(--warm);
         }
 
         .config-status {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             font-size: 10px;
-            font-weight: 500;
-            letter-spacing: 0.3px;
+            font-weight: 600;
         }
 
-        .accent-text {
-            color: var(--accent-light);
+        .badge-tag {
+            display: inline-block;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 50px;
+            background: var(--warm);
+            color: var(--muted);
+            border: 1px solid var(--border);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .brand-footer {
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .brand-footer strong {
+            color: var(--ink);
         }
     </style>
 </head>
-<body class="flex items-center justify-center p-4 sm:p-6 font-mono">
+<body class="flex items-center justify-center p-4 sm:p-6 font-body">
 
     <main class="w-full max-w-lg mx-auto">
 
         <div class="card-board">
 
-            <div class="clapper-stripe"></div>
+            <div class="accent-stripe"></div>
 
             <div class="p-8 sm:p-10">
 
                 <header class="mb-5">
                     <div class="flex items-start gap-3 mb-3">
-                        <img src="/logo-fap.png" alt="FAP" class="w-10 h-10 shrink-0 rounded-lg">
+                        <img src="/logo-fap.png" alt="FAP" class="logo-header">
                         <h1 class="title-film">
-                            StoryboardPro
-                            <span style="display:block;font-size:11px;font-weight:400;color:var(--text-secondary);letter-spacing:0.5px;margin-top:2px;">by fierroduque.com / freeanimationpower.com</span>
+                            Storyboard AI
+                            <span style="display:block;font-size:12px;font-weight:500;color:var(--muted);letter-spacing:0.02em;margin-top:3px;">by Free Animation Power / fierroduque.com</span>
                         </h1>
                     </div>
                     <div class="divider-film"></div>
                     <p class="desc-film">
-                        Conecta tu propia API key y genera storyboards profesionales con IA. Multi-proveedor: OpenAI, Gemini, DeepSeek, HuggingFace, DALL-E y mas.
+                        Conecta tu propia API key y genera storyboards profesionales con IA. Compatible con OpenAI, Gemini, DeepSeek, HuggingFace, DALL-E y mas.
                     </p>
                 </header>
 
@@ -340,25 +387,20 @@
 
                 <div id="configPanel" class="config-panel hidden">
 
-                    <!-- API de Texto -->
                     <div class="config-section-title">API de Texto</div>
-
                     <div class="space-y-3">
                         <div>
                             <label for="textProvider" class="label-film">Proveedor</label>
                             <select id="textProvider" class="select-film"></select>
                         </div>
-
                         <div>
                             <label for="textApiKey" class="label-film">API Key</label>
                             <input type="password" id="textApiKey" class="input-film" placeholder="sk-...">
                         </div>
-
                         <div>
                             <label for="textModel" class="label-film">Modelo</label>
                             <input type="text" id="textModel" class="input-film" placeholder="gpt-4o">
                         </div>
-
                         <div>
                             <label for="textUrl" class="label-film">URL Base</label>
                             <input type="text" id="textUrl" class="input-film" placeholder="https://api.openai.com/v1/chat/completions">
@@ -367,30 +409,24 @@
 
                     <div class="divider-film" style="margin:18px 0;"></div>
 
-                    <!-- API de Imagenes -->
                     <div class="config-section-title">API de Imagenes</div>
-
                     <div class="space-y-3">
                         <div>
                             <label for="imageProvider" class="label-film">Proveedor</label>
                             <select id="imageProvider" class="select-film"></select>
                         </div>
-
                         <div>
                             <label for="imageApiKey" class="label-film">API Key</label>
                             <input type="password" id="imageApiKey" class="input-film" placeholder="Ingresa tu API key / token">
                         </div>
-
                         <div>
                             <label for="imageModel" class="label-film">Modelo</label>
                             <input type="text" id="imageModel" class="input-film" placeholder="black-forest-labs/FLUX.1-schnell">
                         </div>
-
                         <div>
                             <label for="imageUrl" class="label-film">URL Base (solo Personalizado)</label>
                             <input type="text" id="imageUrl" class="input-film" placeholder="https://tu-api-personalizada.com/generar" disabled>
                         </div>
-
                         <div id="imageExtraHeadersWrap" style="display:none;">
                             <label for="imageExtraHeaders" class="label-film">Headers extra (JSON, solo Personalizado)</label>
                             <textarea id="imageExtraHeaders" class="input-film" rows="2" placeholder='{"Authorization":"Bearer xxx","X-Custom":"valor"}' style="padding:10px 14px;font-size:11px;"></textarea>
@@ -427,7 +463,7 @@
                         <div class="loader-prog">
                             <div class="loader-prog-fill"></div>
                         </div>
-                        <span id="statusText" style="color:var(--text-secondary);font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;">
+                        <span id="statusText" style="color:var(--muted);font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;">
                             Procesando...
                         </span>
                     </div>
@@ -438,8 +474,8 @@
         </div>
 
         <footer class="mt-6 text-center">
-            <p class="footer-film">
-                fierroduque.com &middot; freeanimationpower.com
+            <p class="footer-film brand-footer">
+                <strong>Free Animation Power</strong> &middot; fierroduque.com
             </p>
         </footer>
 
