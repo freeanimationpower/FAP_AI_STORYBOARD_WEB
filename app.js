@@ -9,6 +9,141 @@
  */
 
 // ============================================================
+//  TRADUCCIONES (ES / FR / PT)
+// ============================================================
+var I18N = {
+    'es': {
+        'title': 'Storyboard AI &mdash; Free Animation Power',
+        'subtitle': 'by Free Animation Power / fierroduque.com',
+        'desc': 'Conecta tu propia API key y genera storyboards profesionales con IA. Compatible con OpenAI, Gemini, DeepSeek, HuggingFace, DALL-E y mas.',
+        'config_apis': 'Configurar APIs',
+        'hide_config': 'Ocultar configuracion',
+        'api_text': 'API de Texto',
+        'api_image': 'API de Imagenes',
+        'provider': 'Proveedor',
+        'api_key': 'API Key',
+        'model': 'Modelo',
+        'url_base': 'URL Base',
+        'url_base_img': 'URL Base (solo Personalizado)',
+        'headers_extra': 'Headers extra (JSON, solo Personalizado)',
+        'save_config': 'Guardar configuracion',
+        'clear': 'Limpiar',
+        'brief_label': 'Brief creativo',
+        'brief_placeholder': 'Ej: Un comercial de 30 segundos para una marca de autos electricos, dirigido a jovenes profesionales urbanos que valoran la sostenibilidad...',
+        'generate_btn': 'Generar storyboard PDF',
+        'processing': 'Procesando...',
+        'status_text_intro': 'Estructurando narrativa tecnica...',
+        'status_generating': 'Generando imagenes con IA...',
+        'status_pdf': 'Empaquetando PDF final...',
+        'status_done': 'Descarga completada.',
+        'status_image': 'Generando imagen',
+        'status_img_item': 'Imagen',
+        'status_completed': 'Completado. Imagenes:',
+        'status_error': 'Error:',
+        'footer': 'Free Animation Power &middot; fierroduque.com',
+        'lang_tooltip': 'Cambiar idioma',
+        'saved_ok': 'Configuracion guardada. Listo para generar.',
+        'saved_no_key': 'Configuracion guardada. Falta API key de texto.'
+    },
+    'fr': {
+        'title': 'Storyboard AI &mdash; Free Animation Power',
+        'subtitle': 'par Free Animation Power / fierroduque.com',
+        'desc': 'Connectez votre propre clé API et générez des storyboards professionnels avec l\'IA. Compatible avec OpenAI, Gemini, DeepSeek, HuggingFace, DALL-E et plus.',
+        'config_apis': 'Configurer les APIs',
+        'hide_config': 'Masquer la configuration',
+        'api_text': 'API de Texte',
+        'api_image': 'API d\'Images',
+        'provider': 'Fournisseur',
+        'api_key': 'Clé API',
+        'model': 'Modèle',
+        'url_base': 'URL de base',
+        'url_base_img': 'URL de base (Personnalisé uniquement)',
+        'headers_extra': 'En-têtes supplémentaires (JSON, Personnalisé uniquement)',
+        'save_config': 'Enregistrer',
+        'clear': 'Effacer',
+        'brief_label': 'Brief créatif',
+        'brief_placeholder': 'Ex: Une publicité de 30 secondes pour une marque de voitures électriques, destinée aux jeunes professionnels urbains...',
+        'generate_btn': 'Générer le storyboard PDF',
+        'processing': 'Traitement en cours...',
+        'status_text_intro': 'Structuration du récit technique...',
+        'status_generating': 'Génération des images avec l\'IA...',
+        'status_pdf': 'Assemblage du PDF final...',
+        'status_done': 'Téléchargement terminé.',
+        'status_image': 'Génération de l\'image',
+        'status_img_item': 'Image',
+        'status_completed': 'Terminé. Images:',
+        'status_error': 'Erreur:',
+        'footer': 'Free Animation Power &middot; fierroduque.com',
+        'lang_tooltip': 'Changer la langue',
+        'saved_ok': 'Configuration enregistrée. Prêt à générer.',
+        'saved_no_key': 'Configuration enregistrée. Clé API texte manquante.'
+    },
+    'pt': {
+        'title': 'Storyboard AI &mdash; Free Animation Power',
+        'subtitle': 'por Free Animation Power / fierroduque.com',
+        'desc': 'Conecte sua própria chave API e gere storyboards profissionais com IA. Compatível com OpenAI, Gemini, DeepSeek, HuggingFace, DALL-E e mais.',
+        'config_apis': 'Configurar APIs',
+        'hide_config': 'Ocultar configuração',
+        'api_text': 'API de Texto',
+        'api_image': 'API de Imagens',
+        'provider': 'Provedor',
+        'api_key': 'Chave API',
+        'model': 'Modelo',
+        'url_base': 'URL Base',
+        'url_base_img': 'URL Base (apenas Personalizado)',
+        'headers_extra': 'Cabeçalhos extras (JSON, apenas Personalizado)',
+        'save_config': 'Salvar configuração',
+        'clear': 'Limpar',
+        'brief_label': 'Brief criativo',
+        'brief_placeholder': 'Ex: Um comercial de 30 segundos para uma marca de carros elétricos, voltado para jovens profissionais urbanos...',
+        'generate_btn': 'Gerar storyboard PDF',
+        'processing': 'Processando...',
+        'status_text_intro': 'Estruturando narrativa técnica...',
+        'status_generating': 'Gerando imagens com IA...',
+        'status_pdf': 'Montando PDF final...',
+        'status_done': 'Download concluído.',
+        'status_image': 'Gerando imagem',
+        'status_img_item': 'Imagem',
+        'status_completed': 'Concluído. Imagens:',
+        'status_error': 'Erro:',
+        'footer': 'Free Animation Power &middot; fierroduque.com',
+        'lang_tooltip': 'Mudar idioma',
+        'saved_ok': 'Configuração salva. Pronto para gerar.',
+        'saved_no_key': 'Configuração salva. Falta chave API de texto.'
+    }
+};
+
+var currentLang = localStorage.getItem('storyboard_lang') || 'es';
+
+function __(key) {
+    return (I18N[currentLang] && I18N[currentLang][key]) || (I18N['es'][key]) || key;
+}
+
+function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('storyboard_lang', lang);
+    applyTranslations();
+}
+
+function applyTranslations() {
+    var elements = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < elements.length; i++) {
+        var el = elements[i];
+        var key = el.getAttribute('data-i18n');
+        var translated = __(key);
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            el.placeholder = translated;
+        } else {
+            el.innerHTML = translated;
+        }
+    }
+    var titles = document.querySelectorAll('[data-i18n-title]');
+    for (var j = 0; j < titles.length; j++) {
+        titles[j].title = __(titles[j].getAttribute('data-i18n-title'));
+    }
+}
+
+// ============================================================
 //  PRESETS DE PROVEEDORES
 // ============================================================
 const TEXT_PROVIDERS = {
@@ -1266,10 +1401,10 @@ function initConfigUI() {
         saveConfig(config);
 
         if (config.text.apiKey) {
-            configStatus.textContent = 'Configuracion guardada. Listo para generar.';
+            configStatus.textContent = __('saved_ok');
             configStatus.style.color = '#2d7d46';
         } else {
-            configStatus.textContent = 'Configuracion guardada. Falta API key de texto.';
+            configStatus.textContent = __('saved_no_key');
             configStatus.style.color = '#c09800';
         }
     });
@@ -1300,10 +1435,9 @@ function initConfigUI() {
         var panel = configPanel;
         if (panel.classList.contains('hidden')) {
             panel.classList.remove('hidden');
-            showConfigBtn.textContent = 'Ocultar configuracion';
+            showConfigBtn.textContent = __('hide_config');
         } else {
-            panel.classList.add('hidden');
-            showConfigBtn.textContent = 'Configurar APIs';
+            showConfigBtn.textContent = __('config_apis');
         }
     });
 
@@ -1318,6 +1452,32 @@ function initConfigUI() {
 //  CONTROLADOR DE INTERFAZ
 // ============================================================
 document.addEventListener('DOMContentLoaded', function() {
+    applyTranslations();
+
+    var langBtns = document.querySelectorAll('#langSwitch .lang-btn');
+    for (var li = 0; li < langBtns.length; li++) {
+        langBtns[li].addEventListener('click', function() {
+            var lang = this.getAttribute('data-lang');
+            setLang(lang);
+            for (var lj = 0; lj < langBtns.length; lj++) {
+                langBtns[lj].classList.remove('active-lang');
+            }
+            this.classList.add('active-lang');
+            var showCfg = document.getElementById('showConfigBtn');
+            if (showCfg) {
+                var panel = document.getElementById('configPanel');
+                if (panel && !panel.classList.contains('hidden')) {
+                    showCfg.innerHTML = __('hide_config');
+                } else {
+                    showCfg.innerHTML = __('config_apis');
+                }
+            }
+        });
+    }
+
+    var initialLangBtn = document.querySelector('#langSwitch .lang-btn[data-lang="' + currentLang + '"]');
+    if (initialLangBtn) initialLangBtn.classList.add('active-lang');
+
     initConfigUI();
 
     var generateBtn = document.getElementById('generateBtn');
@@ -1338,7 +1498,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (configPanel.classList.contains('hidden')) {
                 configPanel.classList.remove('hidden');
                 var showConfigBtn = document.getElementById('showConfigBtn');
-                if (showConfigBtn) showConfigBtn.textContent = 'Ocultar configuracion';
+                if (showConfigBtn) showConfigBtn.textContent = __('hide_config');
             }
             alert(getErrorMessage('CONFIG_REQUIRED', '', 'API de Texto'));
             return;
@@ -1347,10 +1507,10 @@ document.addEventListener('DOMContentLoaded', function() {
         generateBtn.disabled = true;
         loader.classList.remove('hidden');
 
-        statusText.innerText = 'Estructurando narrativa tecnica...';
+        statusText.innerText = __('status_text_intro');
         obtenerGuionIA(brief).then(function(datosGuion) {
 
-            statusText.innerText = 'Generando imagenes con IA...';
+            statusText.innerText = __('status_generating');
             var promesas = [];
             var sourcesUsadas = {};
             for (var e = 0; e < datosGuion.escenas.length; e++) {
@@ -1362,7 +1522,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         (function(p) {
                             pChain = pChain.then(function() {
                                 var imgIdx = e * 10 + p;
-                                statusText.innerText = 'Generando imagen ' + (imgIdx + 1) + '/8...';
+                                statusText.innerText = __('status_image') + ' ' + (imgIdx + 1) + '/8...';
                                 var plano = escena.planos[p];
                                 var parts = [
                                     'Panel ' + (e * 2 + p + 1) + ' of 8',
@@ -1379,7 +1539,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 planosImg.push(result.data);
                                 var src = result.source || 'Desconocido';
                                 sourcesUsadas[src] = (sourcesUsadas[src] || 0) + 1;
-                                statusText.innerText = 'Imagen ' + (e * 2 + p + 1) + '/8: ' + src;
+                                statusText.innerText = __('status_img_item') + ' ' + (e * 2 + p + 1) + '/8: ' + src;
                             });
                         })(p);
                     }
@@ -1388,7 +1548,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             return Promise.all(promesas).then(function(imagenes) {
-                statusText.innerText = 'Empaquetando PDF final...';
+                statusText.innerText = __('status_pdf');
                 var resumen = [];
                 var keys = Object.keys(sourcesUsadas);
                 for (var k = 0; k < keys.length; k++) {
@@ -1402,7 +1562,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 for (var k = 0; k < keys.length; k++) {
                     resumen.push(sourcesUsadas[keys[k]] + 'x ' + keys[k]);
                 }
-                statusText.innerText = 'Completado. Imagenes: ' + (resumen.join(', ') || 'N/A');
+                statusText.innerText = __('status_completed') + ' ' + (resumen.join(', ') || 'N/A');
             });
 
         }).catch(function(error) {
@@ -1412,12 +1572,12 @@ document.addEventListener('DOMContentLoaded', function() {
             var type = error.apiType || '';
             var msg = getErrorMessage(code, provider, type);
             alert(msg);
-            statusText.innerText = 'Error: ' + msg;
+            statusText.innerText = __('status_error') + ' ' + msg;
         }).then(function() {
             setTimeout(function() {
                 loader.classList.add('hidden');
                 generateBtn.disabled = false;
-                statusText.innerText = 'Procesando...';
+                statusText.innerText = __('processing');
             }, 2000);
         });
     });

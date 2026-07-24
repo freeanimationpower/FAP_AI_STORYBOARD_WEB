@@ -351,15 +351,56 @@
         .brand-footer strong {
             color: var(--ink);
         }
+
+        /* ===== LANGUAGE SWITCHER ===== */
+        .lang-switch {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            z-index: 10;
+        }
+
+        .lang-btn {
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            color: var(--ink);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 10px;
+            padding: 6px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out-expo);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .lang-btn:hover {
+            border-color: var(--orange);
+            color: var(--orange);
+        }
+
+        .lang-btn.active-lang {
+            background: var(--orange);
+            color: var(--ink);
+            border-color: var(--orange);
+            font-weight: 800;
+        }
     </style>
 </head>
 <body class="flex items-center justify-center p-4 sm:p-6 font-body">
 
     <main class="w-full max-w-lg mx-auto">
 
-        <div class="card-board">
+        <div class="card-board" style="position:relative;">
 
             <div class="accent-stripe"></div>
+
+            <div class="lang-switch" id="langSwitch">
+                <button class="lang-btn active-lang" data-lang="es" data-i18n-title="lang_tooltip">ES</button>
+                <button class="lang-btn" data-lang="fr" data-i18n-title="lang_tooltip">FR</button>
+                <button class="lang-btn" data-lang="pt" data-i18n-title="lang_tooltip">PT</button>
+            </div>
 
             <div class="p-8 sm:p-10">
 
@@ -368,71 +409,71 @@
                         <img src="/logo-fap.png" alt="FAP" class="logo-header">
                         <h1 class="title-film">
                             Storyboard AI
-                            <span style="display:block;font-size:12px;font-weight:500;color:var(--muted);letter-spacing:0.02em;margin-top:3px;">by Free Animation Power / fierroduque.com</span>
+                            <span data-i18n="subtitle" style="display:block;font-size:12px;font-weight:500;color:var(--muted);letter-spacing:0.02em;margin-top:3px;">by Free Animation Power / fierroduque.com</span>
                         </h1>
                     </div>
                     <div class="divider-film"></div>
-                    <p class="desc-film">
+                    <p class="desc-film" data-i18n="desc">
                         Conecta tu propia API key y genera storyboards profesionales con IA. Compatible con OpenAI, Gemini, DeepSeek, HuggingFace, DALL-E y mas.
                     </p>
                 </header>
 
                 <!-- ===== PANEL DE CONFIGURACION ===== -->
-                <button id="showConfigBtn" class="config-toggle" type="button">
+                <button id="showConfigBtn" class="config-toggle" type="button" data-i18n="config_apis">
                     Configurar APIs
                 </button>
 
                 <div id="configPanel" class="config-panel hidden">
 
-                    <div class="config-section-title">API de Texto</div>
+                    <div class="config-section-title" data-i18n="api_text">API de Texto</div>
                     <div class="space-y-3">
                         <div>
-                            <label for="textProvider" class="label-film">Proveedor</label>
+                            <label for="textProvider" class="label-film" data-i18n="provider">Proveedor</label>
                             <select id="textProvider" class="select-film"></select>
                         </div>
                         <div>
-                            <label for="textApiKey" class="label-film">API Key</label>
+                            <label for="textApiKey" class="label-film" data-i18n="api_key">API Key</label>
                             <input type="password" id="textApiKey" class="input-film" placeholder="sk-...">
                         </div>
                         <div>
-                            <label for="textModel" class="label-film">Modelo</label>
+                            <label for="textModel" class="label-film" data-i18n="model">Modelo</label>
                             <input type="text" id="textModel" class="input-film" placeholder="gpt-4o">
                         </div>
                         <div>
-                            <label for="textUrl" class="label-film">URL Base</label>
+                            <label for="textUrl" class="label-film" data-i18n="url_base">URL Base</label>
                             <input type="text" id="textUrl" class="input-film" placeholder="https://api.openai.com/v1/chat/completions">
                         </div>
                     </div>
 
                     <div class="divider-film" style="margin:18px 0;"></div>
 
-                    <div class="config-section-title">API de Imagenes</div>
+                    <div class="config-section-title" data-i18n="api_image">API de Imagenes</div>
                     <div class="space-y-3">
                         <div>
-                            <label for="imageProvider" class="label-film">Proveedor</label>
+                            <label for="imageProvider" class="label-film" data-i18n="provider">Proveedor</label>
                             <select id="imageProvider" class="select-film"></select>
                         </div>
                         <div>
-                            <label for="imageApiKey" class="label-film">API Key</label>
+                            <label for="imageApiKey" class="label-film" data-i18n="api_key">API Key</label>
                             <input type="password" id="imageApiKey" class="input-film" placeholder="Ingresa tu API key / token">
                         </div>
                         <div>
-                            <label for="imageModel" class="label-film">Modelo</label>
+                            <label for="imageModel" class="label-film" data-i18n="model">Modelo</label>
                             <input type="text" id="imageModel" class="input-film" placeholder="black-forest-labs/FLUX.1-schnell">
                         </div>
                         <div>
-                            <label for="imageUrl" class="label-film">URL Base (solo Personalizado)</label>
+                            <label for="imageUrl" class="label-film" data-i18n="url_base_img">URL Base (solo Personalizado)</label>
                             <input type="text" id="imageUrl" class="input-film" placeholder="https://tu-api-personalizada.com/generar" disabled>
                         </div>
                         <div id="imageExtraHeadersWrap" style="display:none;">
-                            <label for="imageExtraHeaders" class="label-film">Headers extra (JSON, solo Personalizado)</label>
+                            <label for="imageExtraHeaders" class="label-film" data-i18n="headers_extra">Headers extra (JSON, solo Personalizado)</label>
                             <textarea id="imageExtraHeaders" class="input-film" rows="2" placeholder='{"Authorization":"Bearer xxx","X-Custom":"valor"}' style="padding:10px 14px;font-size:11px;"></textarea>
                         </div>
                     </div>
 
                     <div style="display:flex;align-items:center;gap:10px;margin-top:16px;">
-                        <button id="saveConfigBtn" class="btn-config btn-config-save" type="button">Guardar configuracion</button>
-                        <button id="clearConfigBtn" class="btn-config btn-config-clear" type="button">Limpiar</button>
+                        <button id="saveConfigBtn" class="btn-config btn-config-save" type="button" data-i18n="save_config">Guardar configuracion</button>
+                        <button id="clearConfigBtn" class="btn-config btn-config-clear" type="button" data-i18n="clear">Limpiar</button>
                         <span id="configStatus" class="config-status" style="margin-left:auto;"></span>
                     </div>
 
@@ -441,8 +482,8 @@
                 <!-- Formulario Brief -->
                 <div style="margin-top:2px;">
                     <div>
-                        <label for="briefInput" class="label-film">Brief creativo</label>
-                        <textarea id="briefInput" rows="5" class="input-film" placeholder="Ej: Un comercial de 30 segundos para una marca de autos electricos, dirigido a jovenes profesionales urbanos que valoran la sostenibilidad..."></textarea>
+                        <label for="briefInput" class="label-film" data-i18n="brief_label">Brief creativo</label>
+                        <textarea id="briefInput" rows="5" class="input-film" data-i18n="brief_placeholder" placeholder="Ej: Un comercial de 30 segundos para una marca de autos electricos, dirigido a jovenes profesionales urbanos que valoran la sostenibilidad..."></textarea>
                     </div>
 
                     <button id="generateBtn" type="button" class="btn-film" style="margin-top:14px;">
@@ -450,7 +491,7 @@
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M7 4V2m5 2V2m5 2V2M4 7h16M4 11h16M4 15h16M4 19h16"/>
                             </svg>
-                            Generar storyboard PDF
+                            <span data-i18n="generate_btn">Generar storyboard PDF</span>
                         </span>
                     </button>
                 </div>
@@ -460,7 +501,7 @@
                         <div class="loader-prog">
                             <div class="loader-prog-fill"></div>
                         </div>
-                        <span id="statusText" style="color:var(--muted);font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;">
+                        <span id="statusText" data-i18n="processing" style="color:var(--muted);font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;">
                             Procesando...
                         </span>
                     </div>
@@ -471,8 +512,7 @@
         </div>
 
         <footer class="mt-6 text-center">
-            <p class="footer-film brand-footer">
-                <strong>Free Animation Power</strong> &middot; fierroduque.com
+            <p class="footer-film brand-footer" data-i18n="footer">
             </p>
         </footer>
 
