@@ -219,7 +219,7 @@ const TEXT_PROVIDERS = {
     },
     hf_chat: {
         name: 'HuggingFace Chat (gratis)',
-        url: 'https://api-inference.huggingface.co/models/{model}',
+        url: 'https://router.huggingface.co/hf-inference/models/{model}',
         model: 'mistralai/Mistral-7B-Instruct-v0.3',
         apiFormat: 'huggingface',
         supportsJsonMode: false
@@ -503,7 +503,7 @@ function buildHfPayload(tc, brief) {
         },
         headers: {
             'Content-Type': 'application/json',
-            'x-target-url': 'https://api-inference.huggingface.co/models/' + tc.model,
+            'x-target-url': 'https://router.huggingface.co/hf-inference/models/' + tc.model,
             'x-api-key': tc.apiKey
         }
     };
