@@ -219,9 +219,8 @@ const TEXT_PROVIDERS = {
     },
     hf_chat: {
         name: 'HuggingFace Chat (gratis)',
-        url: 'https://router.huggingface.co/hf-inference/models/{model}',
-        model: 'mistralai/Mistral-7B-Instruct-v0.3',
-        apiFormat: 'huggingface',
+        url: 'https://router.huggingface.co/hf-inference/models/{model}/v1/chat/completions',
+        model: 'Qwen/Qwen2.5-7B-Instruct',
         supportsJsonMode: false
     },
     fireworks: {
@@ -493,29 +492,6 @@ function parseGeminiResponse(data) {
     return '';
 }
 
-function buildHfPayload(tc, brief) {
-    var systemPrompt = obtenerSystemPrompt();
-    var fullPrompt = '[INST] ' + systemPrompt + '\n\n' + brief + ' [/INST]\n\nResponde UNICAMENTE con JSON valido, sin texto adicional:';
-    return {
-        body: {
-            inputs: fullPrompt,
-            parameters: { max_new_tokens: 4096, return_full_text: false }
-        },
-        headers: {
-            'Content-Type': 'application/json',
-            'x-target-url': 'https://router.huggingface.co/hf-inference/models/' + tc.model,
-            'x-api-key': tc.apiKey
-        }
-    };
-}
-
-function parseHfResponse(data) {
-    if (Array.isArray(data) && data.length > 0 && data[0].generated_text) {
-        return data[0].generated_text.trim();
-    }
-    return '';
-}
-
 function obtenerGuionIA(brief, intento) {
     intento = intento || 1;
     var MAX_INTENTOS = 4;
@@ -528,7 +504,6 @@ function obtenerGuionIA(brief, intento) {
 
     var provider = TEXT_PROVIDERS[tc.provider] || TEXT_PROVIDERS.custom;
     var isGemini = (provider.apiFormat === 'gemini');
-    var isHfChat = (provider.apiFormat === 'huggingface');
 
     function makeError(code) {
         var err = new Error(code);
@@ -544,10 +519,6 @@ function obtenerGuionIA(brief, intento) {
         var geminiReq = buildGeminiPayload(tc, brief);
         requestHeaders = geminiReq.headers;
         requestBody = geminiReq.body;
-    } else if (isHfChat) {
-        var hfReq = buildHfPayload(tc, brief);
-        requestHeaders = hfReq.headers;
-        requestBody = hfReq.body;
     } else {
         var payload = {
             model: tc.model,
@@ -621,8 +592,6 @@ function obtenerGuionIA(brief, intento) {
 
         if (isGemini) {
             rawText = parseGeminiResponse(data);
-        } else if (isHfChat) {
-            rawText = parseHfResponse(data);
         } else {
             rawText = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
         }
