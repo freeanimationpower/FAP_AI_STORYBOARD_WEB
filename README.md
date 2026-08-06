@@ -274,6 +274,12 @@ Completado. Imagenes: 6x Stability AI SD3, 2x Pollinations.ai
 
 Puerto configurable via variable de entorno `PORT` (defecto: 3000).
 
+## Documentacion Tecnica
+
+- [Informe Tecnico Storyboard AI](informes_pdf/04_Storyboard_AI.pdf) — Documento completo de arquitectura multi-proveedor, stack tecnologico, diagramas de flujo y especificaciones tecnicas del generador de storyboards con IA.
+
+---
+
 ## Licencia
 
 © Todos los derechos reservados. Free Animation Power (FAP) por Eduardo Fierro Duque.
