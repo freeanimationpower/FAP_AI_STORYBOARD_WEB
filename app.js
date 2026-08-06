@@ -219,7 +219,7 @@ const TEXT_PROVIDERS = {
     },
     hf_chat: {
         name: 'HuggingFace Chat (gratis)',
-        url: 'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3/v1/chat/completions',
+        url: 'https://api-inference.huggingface.co/models/{model}/v1/chat/completions',
         model: 'mistralai/Mistral-7B-Instruct-v0.3',
         supportsJsonMode: false
     },
@@ -526,9 +526,11 @@ function obtenerGuionIA(brief, intento) {
             payload.response_format = { type: 'json_object' };
         }
 
+        var targetUrl = tc.baseUrl.indexOf('{model}') !== -1 ? tc.baseUrl.replace('{model}', tc.model) : tc.baseUrl;
+
         requestHeaders = {
             'Content-Type': 'application/json',
-            'x-target-url': tc.baseUrl,
+            'x-target-url': targetUrl,
             'x-api-key': tc.apiKey
         };
         requestBody = payload;
@@ -1337,7 +1339,7 @@ function initConfigUI() {
             textUrlInput.disabled = false;
         } else {
             textModelInput.value = provider.model;
-            textUrlInput.value = provider.url;
+            textUrlInput.value = provider.url.replace('{model}', provider.model);
             textModelInput.disabled = false;
             textUrlInput.disabled = false;
         }
@@ -1397,7 +1399,7 @@ function initConfigUI() {
             textUrlInput.disabled = false;
         } else if (p) {
             textModelInput.value = textModelInput.value || p.model;
-            textUrlInput.value = textUrlInput.value || p.url;
+            textUrlInput.value = textUrlInput.value || p.url.replace('{model}', p.model);
             textModelInput.disabled = false;
             textUrlInput.disabled = false;
         }
