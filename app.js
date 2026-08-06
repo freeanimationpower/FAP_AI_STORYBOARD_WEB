@@ -533,7 +533,15 @@ function obtenerGuionIA(brief, intento) {
             payload.response_format = { type: 'json_object' };
         }
 
-        var targetUrl = tc.baseUrl.indexOf('{model}') !== -1 ? tc.baseUrl.replace('{model}', tc.model) : tc.baseUrl;
+        var templateUrl = provider.url || '';
+        var targetUrl;
+        if (templateUrl.indexOf('{model}') !== -1) {
+            targetUrl = templateUrl.replace('{model}', tc.model);
+        } else if (tc.baseUrl.indexOf('{model}') !== -1) {
+            targetUrl = tc.baseUrl.replace('{model}', tc.model);
+        } else {
+            targetUrl = tc.baseUrl;
+        }
 
         requestHeaders = {
             'Content-Type': 'application/json',
