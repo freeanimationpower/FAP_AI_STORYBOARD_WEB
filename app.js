@@ -217,13 +217,6 @@ const TEXT_PROVIDERS = {
         model: 'llama-3.3-70b-versatile',
         supportsJsonMode: true
     },
-    hf_chat: {
-        name: 'HuggingFace Chat (gratis)',
-        url: 'https://router.huggingface.co/hf-inference/models/{model}',
-        model: 'Qwen/Qwen2.5-7B-Instruct',
-        apiFormat: 'huggingface',
-        supportsJsonMode: false
-    },
     fireworks: {
         name: 'Fireworks AI (gratis)',
         url: 'https://api.fireworks.ai/inference/v1/chat/completions',
@@ -493,33 +486,6 @@ function parseGeminiResponse(data) {
     return '';
 }
 
-function buildHfPayload(tc, brief) {
-    var systemPrompt = obtenerSystemPrompt();
-    var fullPrompt = '<|im_start|>system\n' + systemPrompt + '\n\nResponde UNICAMENTE con JSON valido, sin texto adicional ni markdown.<|im_end|>\n<|im_start|>user\n' + brief + '<|im_end|>\n<|im_start|>assistant\n';
-    var templateUrl = (TEXT_PROVIDERS[tc.provider] && TEXT_PROVIDERS[tc.provider].url) || tc.baseUrl;
-    if (templateUrl.indexOf('{model}') !== -1) {
-        templateUrl = templateUrl.replace('{model}', tc.model);
-    }
-    return {
-        body: {
-            inputs: fullPrompt,
-            parameters: { max_new_tokens: 4096, return_full_text: false }
-        },
-        headers: {
-            'Content-Type': 'application/json',
-            'x-target-url': templateUrl,
-            'x-api-key': tc.apiKey
-        }
-    };
-}
-
-function parseHfResponse(data) {
-    if (Array.isArray(data) && data.length > 0 && data[0].generated_text) {
-        return data[0].generated_text.trim();
-    }
-    return '';
-}
-
 function obtenerGuionIA(brief, intento) {
     intento = intento || 1;
     var MAX_INTENTOS = 4;
@@ -532,7 +498,6 @@ function obtenerGuionIA(brief, intento) {
 
     var provider = TEXT_PROVIDERS[tc.provider] || TEXT_PROVIDERS.custom;
     var isGemini = (provider.apiFormat === 'gemini');
-    var isHfChat = (provider.apiFormat === 'huggingface');
 
     function makeError(code) {
         var err = new Error(code);
@@ -548,10 +513,6 @@ function obtenerGuionIA(brief, intento) {
         var geminiReq = buildGeminiPayload(tc, brief);
         requestHeaders = geminiReq.headers;
         requestBody = geminiReq.body;
-    } else if (isHfChat) {
-        var hfReq = buildHfPayload(tc, brief);
-        requestHeaders = hfReq.headers;
-        requestBody = hfReq.body;
     } else {
         var payload = {
             model: tc.model,
@@ -566,19 +527,9 @@ function obtenerGuionIA(brief, intento) {
             payload.response_format = { type: 'json_object' };
         }
 
-        var templateUrl = provider.url || '';
-        var targetUrl;
-        if (templateUrl.indexOf('{model}') !== -1) {
-            targetUrl = templateUrl.replace('{model}', tc.model);
-        } else if (tc.baseUrl.indexOf('{model}') !== -1) {
-            targetUrl = tc.baseUrl.replace('{model}', tc.model);
-        } else {
-            targetUrl = tc.baseUrl;
-        }
-
         requestHeaders = {
             'Content-Type': 'application/json',
-            'x-target-url': targetUrl,
+            'x-target-url': tc.baseUrl,
             'x-api-key': tc.apiKey
         };
         requestBody = payload;
@@ -633,8 +584,6 @@ function obtenerGuionIA(brief, intento) {
 
         if (isGemini) {
             rawText = parseGeminiResponse(data);
-        } else if (isHfChat) {
-            rawText = parseHfResponse(data);
         } else {
             rawText = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
         }
@@ -1399,17 +1348,9 @@ function initConfigUI() {
             textUrlInput.disabled = false;
         } else {
             textModelInput.value = provider.model;
-            textUrlInput.value = provider.url.replace('{model}', provider.model);
+            textUrlInput.value = provider.url;
             textModelInput.disabled = false;
             textUrlInput.disabled = false;
-        }
-    });
-
-    // Al escribir un modelo nuevo, actualizar URL si usa template {model}
-    textModelInput.addEventListener('input', function() {
-        var url = textUrlInput.value;
-        if (url.indexOf('{model}') !== -1) {
-            textUrlInput.value = url.replace('{model}', textModelInput.value);
         }
     });
 
@@ -1467,7 +1408,7 @@ function initConfigUI() {
             textUrlInput.disabled = false;
         } else if (p) {
             textModelInput.value = textModelInput.value || p.model;
-            textUrlInput.value = textUrlInput.value || p.url.replace('{model}', p.model);
+            textUrlInput.value = textUrlInput.value || p.url;
             textModelInput.disabled = false;
             textUrlInput.disabled = false;
         }
