@@ -416,7 +416,7 @@ function getErrorMessage(code, providerName, apiType) {
     var messages = {
         'CONFIG_REQUIRED': 'No hay API key configurada. Abre el panel de configuracion arriba y agrega tu clave.',
         'API_KEY_INVALID': 'API key invalida o sin creditos.',
-        'RATE_LIMITED': 'Limite de uso alcanzado. Espera unos segundos o cambia de API key.',
+        'RATE_LIMITED': 'Limite de uso alcanzado. Espera unos minutos o cambia de proveedor (ej: Mistral AI tambien es gratis).',
         'CONNECTION_ERROR': 'No se pudo conectar al proveedor.',
         'PARSE_ERROR': 'La IA devolvio una respuesta inesperada.',
         'SERVER_DOWN': 'El servidor proxy no responde. Ejecuta "node server.js" en la terminal.',
@@ -530,7 +530,8 @@ function obtenerGuionIA(brief, intento) {
 
             if (status === 429) {
                 if (intento < MAX_INTENTOS) {
-                    var delay = Math.max(intento * 10000, 30000);
+                    var delay = intento * 20000 + 10000;
+                    console.warn('Rate limit alcanzado (' + provider.name + '). Reintento ' + intento + '/' + (MAX_INTENTOS - 1) + ' en ' + (delay / 1000) + 's...');
                     return new Promise(function(r) { setTimeout(r, delay); })
                         .then(function() { return obtenerGuionIA(brief, intento + 1); });
                 }
