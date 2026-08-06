@@ -11,7 +11,7 @@
 // ============================================================
 //  UTILIDADES GLOBALES — Timeouts, Parseo Seguro, Validacion
 // ============================================================
-var MASTER_STYLE = 'film storyboard frame, sequential art, hand-drawn pencil illustration, professional storyboard artist style, clear character poses, defined backgrounds, cinematic composition, black ink on white paper, clean linework, readable action, no color, no photorealism, no 3D, no photography, no text, no watermark';
+var MASTER_STYLE = 'storyboard art style, clean line art, black and white, cinematic framing';
 
 function fetchWithTimeout(url, options, timeoutMs) {
     return Promise.race([
@@ -1668,7 +1668,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 var imgIdx = e * 10 + p;
                                 statusText.innerText = __('status_image') + ' ' + (imgIdx + 1) + '/8...';
                                 var plano = escena.planos[p];
-                                var uniquePrompt = MASTER_STYLE + '. Panel ' + (e * 2 + p + 1) + '/8: ' + (plano.image_prompt || 'continuity shot') + '. Camera: ' + (plano.tipo_camara || 'medium shot');
+                                var uniquePrompt = (plano.image_prompt || 'continuity shot') + '. ' + (plano.tipo_camara || 'medium shot') + '. ' + MASTER_STYLE;
                                 console.log('Prompt ' + (e + 1) + '-' + (p + 1) + ': ' + uniquePrompt.slice(0, 150));
                                 return fetchImageAsBase64(uniquePrompt, imgIdx);
                             }).then(function(result) {
