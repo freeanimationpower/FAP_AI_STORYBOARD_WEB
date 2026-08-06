@@ -1345,6 +1345,14 @@ function initConfigUI() {
         }
     });
 
+    // Al escribir un modelo nuevo, actualizar URL si usa template {model}
+    textModelInput.addEventListener('input', function() {
+        var url = textUrlInput.value;
+        if (url.indexOf('{model}') !== -1) {
+            textUrlInput.value = url.replace('{model}', textModelInput.value);
+        }
+    });
+
     imageProviderSelect.addEventListener('change', function() {
         if (initializing) return;
         var providerKey = imageProviderSelect.value;
