@@ -9,7 +9,75 @@
  */
 
 // ============================================================
-//  TRADUCCIONES (ES / FR / PT)
+//  UTILIDADES GLOBALES — Timeouts, Parseo Seguro, Validacion
+// ============================================================
+var MASTER_STYLE = 'storyboard panel, hand-drawn pencil and ink style, high contrast black and white, professional film previsualization, clean composition, clear silhouettes, no color, no text, no watermark';
+
+function fetchWithTimeout(url, options, timeoutMs) {
+    return Promise.race([
+        fetch(url, options),
+        new Promise(function(_, reject) {
+            setTimeout(function() { reject(new Error('TIMEOUT_EXCEDIDO')); }, timeoutMs);
+        })
+    ]);
+}
+
+function safeParseJSON(rawText) {
+    if (!rawText || typeof rawText !== 'string') return typeof rawText === 'object' ? rawText : null;
+
+    try { return JSON.parse(rawText); } catch(e) {}
+
+    var cleaned = rawText.replace(/```json\s*/gi, '').replace(/```\s*/g, '').replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
+    var first = cleaned.indexOf('{');
+    var last = cleaned.lastIndexOf('}');
+
+    if (first !== -1 && last > first) {
+        cleaned = cleaned.slice(first, last + 1);
+        try { return JSON.parse(cleaned); } catch(e) {}
+    }
+
+    cleaned = cleaned.replace(/,\s*}/g, '}').replace(/,\s*\]/g, ']').replace(/\n/g, '\\n').replace(/\r/g, '\\r').replace(/\t/g, '\\t');
+    try { return JSON.parse(cleaned); } catch(e) {}
+
+    var match = cleaned.match(/\{[\s\S]*\}/);
+    if (match) {
+        try { return JSON.parse(match[0]); } catch(e) {}
+    }
+    return null;
+}
+
+function validarGuion(datos) {
+    if (!datos || typeof datos !== 'object') return false;
+    if (!Array.isArray(datos.escenas)) datos.escenas = [];
+
+    var escenas = datos.escenas.slice(0, 4);
+    while (escenas.length < 4) {
+        escenas.push({ numero: escenas.length + 1, planos: [] });
+    }
+
+    for (var e = 0; e < escenas.length; e++) {
+        var esc = escenas[e];
+        if (!esc.planos || !Array.isArray(esc.planos)) esc.planos = [];
+
+        while (esc.planos.length < 2) {
+            esc.planos.push({
+                texto_narrativo: 'Accion de continuidad.',
+                image_prompt: 'Cinematic wide shot, continuity scene',
+                tipo_camara: 'Plano General',
+                movimiento_camara: 'Fijo',
+                ritmo_plano: 'medio',
+                estilo_visual: 'storyboard'
+            });
+        }
+        esc.planos = esc.planos.slice(0, 2);
+    }
+
+    datos.escenas = escenas;
+    return datos;
+}
+
+// ============================================================
+//  TRADUCCIONES (EN / ES / FR / PT)
 // ============================================================
 var I18N = {
     'en': {
@@ -438,6 +506,8 @@ function getErrorMessage(code, providerName, apiType) {
         'RATE_LIMITED': 'Limite de uso alcanzado. Espera unos minutos o cambia de proveedor (ej: Mistral AI tambien es gratis).',
         'CONNECTION_ERROR': 'No se pudo conectar al proveedor.',
         'PARSE_ERROR': 'La IA devolvio una respuesta inesperada.',
+        'MODEL_LOADING': 'El modelo se esta cargando. Reintentando...',
+        'TIMEOUT': 'Tiempo de espera agotado en la API.',
         'SERVER_DOWN': 'El servidor proxy no responde. Ejecuta "node server.js" en la terminal.',
         'IMAGE_FAILED': 'Fallo la generacion de imagen.',
         'IMAGE_PROVIDER_FAILED': 'sin respuesta. Cambiando a Pollinations gratis...'
@@ -488,7 +558,7 @@ function parseGeminiResponse(data) {
 
 function obtenerGuionIA(brief, intento) {
     intento = intento || 1;
-    var MAX_INTENTOS = 4;
+    var MAX_INTENTOS = 3;
     var config = loadConfig();
     var tc = config.text;
 
@@ -499,8 +569,8 @@ function obtenerGuionIA(brief, intento) {
     var provider = TEXT_PROVIDERS[tc.provider] || TEXT_PROVIDERS.custom;
     var isGemini = (provider.apiFormat === 'gemini');
 
-    function makeError(code) {
-        var err = new Error(code);
+    function makeError(code, msg) {
+        var err = new Error(msg || code);
         err.errorCode = code;
         err.providerName = provider.name;
         err.apiType = 'Texto';
@@ -535,86 +605,97 @@ function obtenerGuionIA(brief, intento) {
         requestBody = payload;
     }
 
-    return fetch('/api/chat', {
+    return fetchWithTimeout('/api/chat', {
         method: 'POST',
         headers: requestHeaders,
         body: JSON.stringify(requestBody)
-    }).then(function(response) {
+    }, 30000)
+    .then(function(response) {
         if (!response.ok) {
-            var status = response.status;
+            return response.text().then(function(errText) {
+                var errObj = safeParseJSON(errText) || {};
+                var msg = errObj.error ? (errObj.error.message || errObj.error) : (errObj.message || ('HTTP ' + response.status));
 
-            if (status === 401 || status === 403) {
-                return Promise.reject(makeError('API_KEY_INVALID'));
-            }
+                if (response.status === 401 || response.status === 403) {
+                    return Promise.reject(makeError('API_KEY_INVALID', msg));
+                }
+                if (response.status === 429) {
+                    if (intento < MAX_INTENTOS) {
+                        var delay = intento * 20000 + 10000;
+                        console.warn('Rate limit alcanzado (' + provider.name + '). Reintento ' + intento + '/' + (MAX_INTENTOS - 1) + ' en ' + (delay / 1000) + 's...');
+                        return new Promise(function(r) { setTimeout(r, delay); })
+                            .then(function() { return obtenerGuionIA(brief, intento + 1); });
+                    }
+                    return Promise.reject(makeError('RATE_LIMITED', msg));
+                }
+                if (response.status === 503) {
+                    if (intento < MAX_INTENTOS) {
+                        var delay503 = intento * 30000 + 20000;
+                        console.warn('Modelo cargando (' + provider.name + '). Reintento ' + intento + '/' + (MAX_INTENTOS - 1) + ' en ' + (delay503 / 1000) + 's...');
+                        return new Promise(function(r) { setTimeout(r, delay503); })
+                            .then(function() { return obtenerGuionIA(brief, intento + 1); });
+                    }
+                    return Promise.reject(makeError('MODEL_LOADING', msg));
+                }
 
-            if (status === 429) {
                 if (intento < MAX_INTENTOS) {
-                    var delay = intento * 20000 + 10000;
-                    console.warn('Rate limit alcanzado (' + provider.name + '). Reintento ' + intento + '/' + (MAX_INTENTOS - 1) + ' en ' + (delay / 1000) + 's...');
-                    return new Promise(function(r) { setTimeout(r, delay); })
+                    var delay2 = intento * 10000;
+                    return new Promise(function(r) { setTimeout(r, delay2); })
                         .then(function() { return obtenerGuionIA(brief, intento + 1); });
                 }
-                return Promise.reject(makeError('RATE_LIMITED'));
-            }
-
-            if (status === 503) {
-                if (intento < MAX_INTENTOS) {
-                    var delay503 = intento * 30000 + 20000;
-                    console.warn('Modelo cargando (' + provider.name + '). Reintento ' + intento + '/' + (MAX_INTENTOS - 1) + ' en ' + (delay503 / 1000) + 's...');
-                    return new Promise(function(r) { setTimeout(r, delay503); })
-                        .then(function() { return obtenerGuionIA(brief, intento + 1); });
-                }
-                return Promise.reject(makeError('CONNECTION_ERROR'));
-            }
-
-            if (intento < MAX_INTENTOS) {
-                var delay2 = intento * 10000;
-                return new Promise(function(r) { setTimeout(r, delay2); })
-                    .then(function() { return obtenerGuionIA(brief, intento + 1); });
-            }
-
-            return response.text().then(function(errBody) {
-                throw new Error('API error ' + status + ': ' + errBody);
+                return Promise.reject(makeError('HTTP_ERROR', msg));
             });
         }
-
-        return response.json();
-    }).then(function(data) {
-        var rawText;
-
-        if (isGemini) {
-            rawText = parseGeminiResponse(data);
-        } else {
-            rawText = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-        }
-
-        if (!rawText) throw new Error('La IA devolvio respuesta vacia.');
-
-        rawText = rawText.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
-        var firstBrace = rawText.indexOf('{');
-        var lastBrace = rawText.lastIndexOf('}');
-        if (firstBrace !== -1 && lastBrace !== -1 && firstBrace < lastBrace) {
-            rawText = rawText.slice(firstBrace, lastBrace + 1);
-        }
-
-        try {
-            return JSON.parse(rawText);
-        } catch (parseError) {
+        return response.text();
+    })
+    .then(function(rawText) {
+        var parsedResponse = safeParseJSON(rawText);
+        if (!parsedResponse) {
             if (intento < MAX_INTENTOS) {
                 return new Promise(function(r) { setTimeout(r, 2000); })
                     .then(function() { return obtenerGuionIA(brief, intento + 1); });
             }
             throw makeError('PARSE_ERROR');
         }
-    }).catch(function(e) {
-        if (e.errorCode === 'CONFIG_REQUIRED' || e.errorCode === 'API_KEY_INVALID' ||
-            e.errorCode === 'RATE_LIMITED' || e.errorCode === 'PARSE_ERROR') {
-            throw e;
+
+        var extractedText = isGemini
+            ? parseGeminiResponse(parsedResponse)
+            : (parsedResponse.choices && parsedResponse.choices[0] && parsedResponse.choices[0].message && parsedResponse.choices[0].message.content);
+
+        if (!extractedText) {
+            if (intento < MAX_INTENTOS) {
+                return new Promise(function(r) { setTimeout(r, 2000); })
+                    .then(function() { return obtenerGuionIA(brief, intento + 1); });
+            }
+            throw makeError('PARSE_ERROR');
         }
+
+        var guionParsed = safeParseJSON(extractedText);
+        if (guionParsed) {
+            var validado = validarGuion(guionParsed);
+            if (validado) return validado;
+        }
+
         if (intento < MAX_INTENTOS) {
-            var delay3 = intento * 10000;
-            return new Promise(function(r) { setTimeout(r, delay3); })
+            return new Promise(function(r) { setTimeout(r, 2000 * intento); })
                 .then(function() { return obtenerGuionIA(brief, intento + 1); });
+        }
+        throw makeError('PARSE_ERROR');
+    })
+    .catch(function(e) {
+        if (e.message === 'TIMEOUT_EXCEDIDO') {
+            if (intento < MAX_INTENTOS) {
+                console.warn('Timeout de 30s en texto (' + provider.name + '). Reintento ' + intento + '/' + (MAX_INTENTOS - 1) + '...');
+                return new Promise(function(r) { setTimeout(r, 1000); })
+                    .then(function() { return obtenerGuionIA(brief, intento + 1); });
+            }
+            throw makeError('TIMEOUT');
+        }
+        if (e.errorCode === 'CONFIG_REQUIRED' || e.errorCode === 'API_KEY_INVALID' ||
+            e.errorCode === 'RATE_LIMITED' || e.errorCode === 'PARSE_ERROR' ||
+            e.errorCode === 'MODEL_LOADING' || e.errorCode === 'TIMEOUT' ||
+            e.errorCode === 'HTTP_ERROR') {
+            throw e;
         }
         throw makeError('CONNECTION_ERROR');
     });
@@ -918,11 +999,11 @@ function fetchImageAsBase64(prompt, index) {
     }
 
     function tryViaProxy(payload) {
-        return fetch('/api/img', {
+        return fetchWithTimeout('/api/img', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
-        }).then(function(r) {
+        }, 45000).then(function(r) {
             if (r.status !== 200) return null;
             return r.arrayBuffer();
         }).then(function(buf) {
@@ -1000,11 +1081,11 @@ function tryPollinations(enhanced, index) {
     });
 
     function tryRequestWithRetry(payload, maxRetries, idx) {
-        return fetch('/api/img', {
+        return fetchWithTimeout('/api/img', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
-        }).then(function(r) {
+        }, 60000).then(function(r) {
             if (r.status === 200) return r.arrayBuffer();
             return null;
         }).then(function(buf) {
@@ -1587,15 +1668,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 var imgIdx = e * 10 + p;
                                 statusText.innerText = __('status_image') + ' ' + (imgIdx + 1) + '/8...';
                                 var plano = escena.planos[p];
-                                var parts = [
-                                    'Panel ' + (e * 2 + p + 1) + ' of 8',
-                                    plano.texto_narrativo.slice(0, 250),
-                                    'Shot type: ' + (plano.tipo_camara || 'medium shot'),
-                                    'Movement: ' + (plano.movimiento_camara || 'static'),
-                                    'Look: ' + (plano.estilo_visual || 'storyboard hand-drawn'),
-                                    'Details: ' + (plano.image_prompt || '')
-                                ];
-                                var uniquePrompt = parts.join(' | ');
+                                var uniquePrompt = 'Panel ' + (e * 2 + p + 1) + '/8. ' + (plano.image_prompt || 'continuity shot') + '. ' + MASTER_STYLE;
                                 console.log('Prompt ' + (e + 1) + '-' + (p + 1) + ': ' + uniquePrompt.slice(0, 150));
                                 return fetchImageAsBase64(uniquePrompt, imgIdx);
                             }).then(function(result) {
