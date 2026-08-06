@@ -258,6 +258,7 @@ const TEXT_PROVIDERS = {
 const IMAGE_PROVIDERS = {
     stability_sd3: {
         name: 'Stability AI SD3',
+        model: 'Stable Diffusion 3',
         method: 'POST',
         formatPayload: function(prompt) {
             return {
@@ -271,6 +272,7 @@ const IMAGE_PROVIDERS = {
     },
     gemini_imagen: {
         name: 'Google Gemini (Imagen)',
+        model: 'Imagen 3.0',
         method: 'POST',
         formatPayload: function(prompt) {
             return {
@@ -286,6 +288,7 @@ const IMAGE_PROVIDERS = {
     },
     hf_flux_schnell: {
         name: 'HuggingFace FLUX.1 Schnell',
+        model: 'FLUX.1 Schnell',
         method: 'POST',
         formatPayload: function(prompt) {
             return {
@@ -298,6 +301,7 @@ const IMAGE_PROVIDERS = {
     },
     hf_flux_dev: {
         name: 'HuggingFace FLUX.1 Dev',
+        model: 'FLUX.1 Dev',
         method: 'POST',
         formatPayload: function(prompt) {
             return {
@@ -310,6 +314,7 @@ const IMAGE_PROVIDERS = {
     },
     hf_sdxl: {
         name: 'HuggingFace SDXL Turbo',
+        model: 'SDXL Turbo',
         method: 'POST',
         formatPayload: function(prompt) {
             return {
@@ -322,6 +327,7 @@ const IMAGE_PROVIDERS = {
     },
     openai_dalle3: {
         name: 'OpenAI DALL-E 3',
+        model: 'DALL-E 3',
         method: 'POST',
         formatPayload: function(prompt) {
             return {
@@ -334,6 +340,7 @@ const IMAGE_PROVIDERS = {
     },
     openai_dalle2: {
         name: 'OpenAI DALL-E 2',
+        model: 'DALL-E 2',
         method: 'POST',
         formatPayload: function(prompt) {
             return {
@@ -1356,6 +1363,7 @@ function initConfigUI() {
     imageProviderSelect.addEventListener('change', function() {
         if (initializing) return;
         var providerKey = imageProviderSelect.value;
+        var provider = IMAGE_PROVIDERS[providerKey];
         if (providerKey === 'pollinations') {
             imageApiKeyInput.value = '';
             imageApiKeyInput.disabled = true;
@@ -1374,9 +1382,8 @@ function initConfigUI() {
         } else {
             imageApiKeyInput.disabled = false;
             imageApiKeyInput.placeholder = 'Ingresa tu API key / token';
-            imageModelInput.value = '';
+            imageModelInput.value = provider ? (provider.model || provider.name) : '';
             imageModelInput.disabled = false;
-            imageModelInput.placeholder = 'Auto-detectado';
             imageUrlInput.value = '';
             imageUrlInput.disabled = true;
             if (imageExtraHeadersWrap) imageExtraHeadersWrap.style.display = 'none';
@@ -1415,6 +1422,7 @@ function initConfigUI() {
 
     (function applyImageState() {
         var pk = imageProviderSelect.value;
+        var prov = IMAGE_PROVIDERS[pk];
         if (pk === 'pollinations') {
             imageApiKeyInput.value = imageApiKeyInput.value || '';
             imageApiKeyInput.disabled = true;
@@ -1433,9 +1441,8 @@ function initConfigUI() {
         } else {
             imageApiKeyInput.disabled = false;
             imageApiKeyInput.placeholder = 'Ingresa tu API key / token';
-            imageModelInput.value = '';
+            imageModelInput.value = imageModelInput.value || (prov ? (prov.model || prov.name) : '');
             imageModelInput.disabled = false;
-            imageModelInput.placeholder = 'Auto-detectado';
             imageUrlInput.value = '';
             imageUrlInput.disabled = true;
             if (imageExtraHeadersWrap) imageExtraHeadersWrap.style.display = 'none';
