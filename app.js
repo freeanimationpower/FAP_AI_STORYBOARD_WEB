@@ -274,7 +274,7 @@ const TEXT_PROVIDERS = {
         supportsJsonMode: true
     },
     deepseek: {
-        name: 'DeepSeek (gratis)',
+        name: 'DeepSeek (pago)',
         url: 'https://api.deepseek.com/v1/chat/completions',
         model: 'deepseek-chat',
         supportsJsonMode: true
