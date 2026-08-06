@@ -594,6 +594,16 @@ function obtenerGuionIA(brief, intento) {
                 return Promise.reject(makeError('RATE_LIMITED'));
             }
 
+            if (status === 503) {
+                if (intento < MAX_INTENTOS) {
+                    var delay503 = intento * 30000 + 20000;
+                    console.warn('Modelo cargando (' + provider.name + '). Reintento ' + intento + '/' + (MAX_INTENTOS - 1) + ' en ' + (delay503 / 1000) + 's...');
+                    return new Promise(function(r) { setTimeout(r, delay503); })
+                        .then(function() { return obtenerGuionIA(brief, intento + 1); });
+                }
+                return Promise.reject(makeError('CONNECTION_ERROR'));
+            }
+
             if (intento < MAX_INTENTOS) {
                 var delay2 = intento * 10000;
                 return new Promise(function(r) { setTimeout(r, delay2); })
