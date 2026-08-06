@@ -206,7 +206,7 @@ const TEXT_PROVIDERS = {
         supportsJsonMode: true
     },
     deepseek: {
-        name: 'DeepSeek',
+        name: 'DeepSeek (gratis)',
         url: 'https://api.deepseek.com/v1/chat/completions',
         model: 'deepseek-chat',
         supportsJsonMode: true
@@ -215,6 +215,18 @@ const TEXT_PROVIDERS = {
         name: 'Groq',
         url: 'https://api.groq.com/openai/v1/chat/completions',
         model: 'llama-3.3-70b-versatile',
+        supportsJsonMode: true
+    },
+    hf_chat: {
+        name: 'HuggingFace Chat (gratis)',
+        url: 'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3/v1/chat/completions',
+        model: 'mistralai/Mistral-7B-Instruct-v0.3',
+        supportsJsonMode: false
+    },
+    fireworks: {
+        name: 'Fireworks AI (gratis)',
+        url: 'https://api.fireworks.ai/inference/v1/chat/completions',
+        model: 'accounts/fireworks/models/llama-v3p1-70b-instruct',
         supportsJsonMode: true
     },
     together: {
@@ -227,6 +239,12 @@ const TEXT_PROVIDERS = {
         name: 'OpenRouter',
         url: 'https://openrouter.ai/api/v1/chat/completions',
         model: 'openai/gpt-4o',
+        supportsJsonMode: true
+    },
+    xai: {
+        name: 'xAI Grok (pago)',
+        url: 'https://api.x.ai/v1/chat/completions',
+        model: 'grok-2',
         supportsJsonMode: true
     },
     custom: {
