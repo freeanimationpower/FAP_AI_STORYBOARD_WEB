@@ -1121,10 +1121,21 @@ function asegurarJsPDF() {
     });
 }
 
+var logoPDF = null;
+function cargarLogoPDF() {
+    return new Promise(function(resolve) {
+        if (logoPDF) return resolve(logoPDF);
+        var img = new Image();
+        img.onload = function() { logoPDF = img; resolve(img); };
+        img.onerror = function() { resolve(null); };
+        img.src = 'FAP AI STORYBOARD WEB.png';
+    });
+}
+
 /**
  * Ensambla el PDF con jsPDF en formato 16:9 (A4 landscape).
  */
-function ensamblarPDF(datosGuion, imagenes) {
+function ensamblarPDF(datosGuion, imagenes, logo) {
     return asegurarJsPDF().then(function() {
         var jsPDF = window.jspdf.jsPDF;
         var doc = new jsPDF('p', 'mm', [297, 335]);
@@ -1148,16 +1159,24 @@ function ensamblarPDF(datosGuion, imagenes) {
         doc.setFillColor(255, 224, 0);
         doc.rect(0, 0, pw, ph, 'F');
 
-        // Logo: FAP AI STORYBOARD WEB
-        doc.setFont('courier', 'bold');
-        doc.setTextColor(0, 0, 0);
-        doc.setFontSize(13);
-        doc.text('FAP AI', cy, 28, { align: 'center' });
-        doc.setTextColor(252, 73, 2);
-        doc.setFontSize(9);
-        doc.text('STORYBOARD WEB', cy, 36, { align: 'center' });
+        // Logo: FAP AI STORYBOARD WEB (imagen)
+        if (logo) {
+            var logoW = 52;
+            var logoH = 16;
+            var logoX = cy - logoW / 2;
+            var logoY = 20;
+            doc.addImage(logo, 'PNG', logoX, logoY, logoW, logoH);
+        } else {
+            doc.setFont('courier', 'bold');
+            doc.setTextColor(0, 0, 0);
+            doc.setFontSize(13);
+            doc.text('FAP AI', cy, 28, { align: 'center' });
+            doc.setTextColor(252, 73, 2);
+            doc.setFontSize(9);
+            doc.text('STORYBOARD WEB', cy, 36, { align: 'center' });
+        }
 
-        var titY = 58;
+        var titY = 52;
 
         doc.setTextColor(252, 73, 2);
         doc.setFont('courier', 'bold');
@@ -1678,7 +1697,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     resumen.push(sourcesUsadas[keys[k]] + 'x ' + keys[k]);
                 }
                 console.log('Resumen de imagenes: ' + resumen.join(', '));
-                return ensamblarPDF(datosGuion, imagenes);
+                return cargarLogoPDF().then(function(logo) {
+                    return ensamblarPDF(datosGuion, imagenes, logo);
+                });
             }).then(function() {
                 var resumen = [];
                 var keys = Object.keys(sourcesUsadas);
