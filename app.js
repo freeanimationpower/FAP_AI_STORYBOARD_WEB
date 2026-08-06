@@ -1126,18 +1126,6 @@ function asegurarJsPDF() {
  */
 function ensamblarPDF(datosGuion, imagenes) {
     return asegurarJsPDF().then(function() {
-        return fetch('/logo-fap.png')
-            .then(function(r) { return r.blob(); })
-            .then(function(blob) {
-                return new Promise(function(resolve) {
-                    var reader = new FileReader();
-                    reader.onload = function() { resolve(reader.result); };
-                    reader.readAsDataURL(blob);
-                });
-            }).catch(function() {
-                return null;
-            });
-    }).then(function(logoDataUrl) {
         var jsPDF = window.jspdf.jsPDF;
         var doc = new jsPDF('p', 'mm', [297, 335]);
         var pw = doc.internal.pageSize.getWidth();
@@ -1160,17 +1148,16 @@ function ensamblarPDF(datosGuion, imagenes) {
         doc.setFillColor(255, 224, 0);
         doc.rect(0, 0, pw, ph, 'F');
 
-        // Logo FAP centrado arriba
-        var logoY = 0;
-        if (logoDataUrl) {
-            var logoW = 30;
-            var logoH = 30;
-            var logoX = cy - logoW / 2;
-            logoY = 16;
-            doc.addImage(logoDataUrl, 'PNG', logoX, logoY, logoW, logoH);
-        }
+        // Logo: FAP AI STORYBOARD WEB
+        doc.setFont('courier', 'bold');
+        doc.setTextColor(0, 0, 0);
+        doc.setFontSize(13);
+        doc.text('FAP AI', cy, 28, { align: 'center' });
+        doc.setTextColor(252, 73, 2);
+        doc.setFontSize(9);
+        doc.text('STORYBOARD WEB', cy, 36, { align: 'center' });
 
-        var titY = logoDataUrl ? logoY + logoH + 14 : 50;
+        var titY = 58;
 
         doc.setTextColor(252, 73, 2);
         doc.setFont('courier', 'bold');
