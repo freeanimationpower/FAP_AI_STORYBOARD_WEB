@@ -11,7 +11,7 @@
 // ============================================================
 //  UTILIDADES GLOBALES — Timeouts, Parseo Seguro, Validacion
 // ============================================================
-var MASTER_STYLE = 'storyboard panel, hand-drawn pencil and ink style, high contrast black and white, professional film previsualization, clean composition, clear silhouettes, no color, no text, no watermark';
+var MASTER_STYLE = 'hand-drawn storyboard, pencil sketch, ink drawing, black and white, rough lines, sketchy style, NO photorealistic, NO 3D render, NO photography, clean composition, clear silhouettes, no color, no text, no watermark';
 
 function fetchWithTimeout(url, options, timeoutMs) {
     return Promise.race([
@@ -1668,7 +1668,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 var imgIdx = e * 10 + p;
                                 statusText.innerText = __('status_image') + ' ' + (imgIdx + 1) + '/8...';
                                 var plano = escena.planos[p];
-                                var uniquePrompt = 'Panel ' + (e * 2 + p + 1) + '/8. ' + (plano.image_prompt || 'continuity shot') + '. ' + MASTER_STYLE;
+                                var uniquePrompt = MASTER_STYLE + '. Panel ' + (e * 2 + p + 1) + '/8. ' + (plano.image_prompt || 'continuity shot');
                                 console.log('Prompt ' + (e + 1) + '-' + (p + 1) + ': ' + uniquePrompt.slice(0, 150));
                                 return fetchImageAsBase64(uniquePrompt, imgIdx);
                             }).then(function(result) {
