@@ -1,21 +1,38 @@
-# Storyboard AI — by FAP / fierroduque.com
+# Storyboard AI — by Free Animation Power / fierroduque.com
+<p align="center">
+  <a href="https://freeanimationpower.org"><img src="https://img.shields.io/badge/Web_Hub-freeanimationpower.org-ffdc00?style=for-the-badge" alt="Web Hub"></a>
+  <a href="https://www.youtube.com/@freeanimationpower"><img src="https://img.shields.io/badge/YouTube-@freeanimationpower-FF0000?style=for-the-badge&logo=youtube&logoColor=white" alt="YouTube"></a>
+  <a href="https://github.com/freeanimationpower"><img src="https://img.shields.io/badge/GitHub-freeanimationpower-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"></a>
+</p>
+
+<p align="center">
+  <img src="docs/screenshot.png" alt="Storyboard AI — generador de storyboards con IA multi-proveedor" width="860">
+</p>
+
+## 🎬 Videos
+
+📺 Canal oficial: [@freeanimationpower](https://www.youtube.com/@freeanimationpower)
+
+| Vídeo | Título |
+|---|---|
+| <a href="https://youtu.be/S_pCivQknvQ"><img src="https://i.ytimg.com/vi/S_pCivQknvQ/hqdefault.jpg" width="240"></a> | [Vídeo general: en qué dispositivos funciona Free Animation Power](https://youtu.be/S_pCivQknvQ) |
 
 > **Accede directamente desde la web**: [freeanimationpower.org/tools/storyboard/](https://freeanimationpower.org/tools/storyboard/)  
-> El hub central de FAP incluye proxies PHP que reemplazan el servidor Node.js. Conecta tu API key y usa la herramienta sin instalar nada.
+> El hub central de Free Animation Power incluye proxies PHP que reemplazan el servidor Node.js. Conecta tu API key y usa la herramienta sin instalar nada.
 
-<img width="1254" height="1254" alt="FAP AI STORYBOARD WEB" src="https://github.com/user-attachments/assets/25f6f90d-6c85-4a9a-a799-8ae551cb0e7a" />
+<img width="1254" height="1254" alt="Free Animation Power AI STORYBOARD WEB" src="https://github.com/user-attachments/assets/25f6f90d-6c85-4a9a-a799-8ae551cb0e7a" />
 
 Aplicacion web que convierte un brief creativo en un storyboard visual de 4 escenas
 (2 planos por escena) con presentacion descargable en PDF. **9 proveedores de texto
 y 10 de imagen.** Traducida a 4 idiomas.
 
-Parte del ecosistema **Free Animation Power (FAP)** junto con:
+Parte del ecosistema **Free Animation Power** junto con:
 
-- [FAP Web Hub](https://freeanimationpower.org) — Landing page oficial con todas las herramientas
-- [FAP Desktop](https://github.com/freeanimationpower/FAP_PC_WEB_VERSION) — Estudio de animacion 2D para PC (1920x1080, 60 pinceles, tabletas)
-- [FAP Mobile](https://github.com/freeanimationpower/FAP_MOBILE_WEB_VERSION) — Estudio de animacion 2D para moviles
-- [FAP Desktop App](https://github.com/freeanimationpower/FreeAnimationPower) — Aplicacion nativa Windows (C++20/Qt 6)
-- [FAP APK](https://github.com/freeanimationpower/FREE-ANIMATION-POWER-APK) — App Android nativa
+- [Free Animation Power Web Hub](https://freeanimationpower.org) — Landing page oficial con todas las herramientas
+- [Free Animation Power Desktop](https://github.com/freeanimationpower/FAP_PC_WEB_VERSION) — Estudio de animacion 2D para PC (1920x1080, 60 pinceles, tabletas)
+- [Free Animation Power Mobile](https://github.com/freeanimationpower/FAP_MOBILE_WEB_VERSION) — Estudio de animacion 2D para moviles
+- [Free Animation Power Desktop App](https://github.com/freeanimationpower/FreeAnimationPower) — Aplicacion nativa Windows (C++20/Qt 6)
+- [Free Animation Power APK](https://github.com/freeanimationpower/FREE-ANIMATION-POWER-APK) — App Android nativa
 
 Arquitectura multi-proveedor: el usuario conecta su propia API key del servicio que
 prefiera, sin depender de un unico modelo.
@@ -23,7 +40,7 @@ prefiera, sin depender de un unico modelo.
 ## Arquitectura
 
 - **Frontend**: HTML5 + Tailwind CSS (CDN) + JavaScript Vanilla (ES5)
-- **Tema visual**: FAP corporativo — fondo amarillo `#ffdc00`, cards blancas, acento naranja `#ff4200`, fuentes Outfit + Plus Jakarta Sans
+- **Tema visual**: Free Animation Power corporativo — fondo amarillo `#ffdc00`, cards blancas, acento naranja `#ff4200`, fuentes Outfit + Plus Jakarta Sans
 - **Idiomas**: Ingles, Español, Francés, Portugués — selector en vivo sin recargar
 - **IA Narrativa**: Multi-proveedor — API OpenAI-compatible generica + Gemini nativo
 - **Generacion Visual**: Multi-proveedor con fallback en cascada (Stability SD3, HF FLUX, DALL-E, Gemini Imagen, Pollinations gratis, Canvas placeholder)
@@ -266,7 +283,7 @@ Completado. Imagenes: 6x Stability AI SD3, 2x Pollinations.ai
 
 | Plataforma | Comando |
 |-----------|---------|
-| **FAP Web Hub** | [freeanimationpower.org/tools/storyboard](https://freeanimationpower.org/tools/storyboard) |
+| **Free Animation Power Web Hub** | [freeanimationpower.org/tools/storyboard](https://freeanimationpower.org/tools/storyboard) |
 | Render.com | `node server.js` |
 | Railway | `node server.js` |
 | Fly.io | `node server.js` |
@@ -282,9 +299,9 @@ Puerto configurable via variable de entorno `PORT` (defecto: 3000).
 
 ## Licencia
 
-© Todos los derechos reservados. Free Animation Power (FAP) por Eduardo Fierro Duque.
+© Todos los derechos reservados. Free Animation Power por Eduardo Fierro Duque.
 
 - [freeanimationpower.org](https://freeanimationpower.org)
 - [fierroduque.com](https://www.fierroduque.com)
 - GitHub: [eduardofierroduque-sudo](https://github.com/eduardofierroduque-sudo)
-- GitHub FAP: [freeanimationpower](https://github.com/freeanimationpower)
+- GitHub Free Animation Power: [freeanimationpower](https://github.com/freeanimationpower)
