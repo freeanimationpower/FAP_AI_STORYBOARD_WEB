@@ -9,7 +9,7 @@
   <img src="docs/screenshot.png" alt="Storyboard AI — generador de storyboards con IA multi-proveedor" width="860">
 </p>
 
-## 🎬 Videos
+## 🎬 Vídeos
 
 📺 Canal oficial: [@freeanimationpower](https://www.youtube.com/@freeanimationpower)
 
@@ -22,20 +22,20 @@
 
 <img width="1254" height="1254" alt="Free Animation Power AI STORYBOARD WEB" src="https://github.com/user-attachments/assets/25f6f90d-6c85-4a9a-a799-8ae551cb0e7a" />
 
-Aplicacion web que convierte un brief creativo en un storyboard visual de 4 escenas
+Aplicación web que convierte un brief creativo en un storyboard visual de 4 escenas
 (2 planos por escena) con presentacion descargable en PDF. **9 proveedores de texto
 y 10 de imagen.** Traducida a 4 idiomas.
 
 Parte del ecosistema **Free Animation Power** junto con:
 
 - [Free Animation Power Web Hub](https://freeanimationpower.org) — Landing page oficial con todas las herramientas
-- [Free Animation Power Desktop](https://github.com/freeanimationpower/FAP_PC_WEB_VERSION) — Estudio de animacion 2D para PC (1920x1080, 60 pinceles, tabletas)
-- [Free Animation Power Mobile](https://github.com/freeanimationpower/FAP_MOBILE_WEB_VERSION) — Estudio de animacion 2D para moviles
-- [Free Animation Power Desktop App](https://github.com/freeanimationpower/FreeAnimationPower) — Aplicacion nativa Windows (C++20/Qt 6)
+- [Free Animation Power Desktop](https://github.com/freeanimationpower/FAP_PC_WEB_VERSION) — Estudio de animación 2D para PC (1920x1080, 60 pinceles, tabletas)
+- [Free Animation Power Mobile](https://github.com/freeanimationpower/FAP_MOBILE_WEB_VERSION) — Estudio de animación 2D para moviles
+- [Free Animation Power Desktop App](https://github.com/freeanimationpower/FreeAnimationPower) — Aplicación nativa Windows (C++20/Qt 6)
 - [Free Animation Power APK](https://github.com/freeanimationpower/FREE-ANIMATION-POWER-APK) — App Android nativa
 
 Arquitectura multi-proveedor: el usuario conecta su propia API key del servicio que
-prefiera, sin depender de un unico modelo.
+prefiera, sin depender de un único modelo.
 
 ## Arquitectura
 
@@ -47,9 +47,9 @@ flowchart LR
     classDef ext fill:#ffffff,stroke:#1a1a1a,color:#1a1a1a,stroke-width:2px;
         USER["Brief creativo<br/>idea + estilo + tono"] --> CFG["Configurar APIs<br/>tu propia key, sin servidor propio"]
         CFG --> TXT["Proveedor de texto<br/>OpenAI · Gemini · DeepSeek<br/>HuggingFace + 5 mas"]
-        TXT --> ESC["Escenas estructuradas<br/>titulo · descripcion · dialogo"]
+        TXT --> ESC["Escenas estructuradas<br/>título · descripción · dialogo"]
         ESC --> IMG["Proveedor de imagen<br/>DALL-E · SDXL + 8 mas"]
-        IMG --> PAN["Panel de vinetas<br/>edicion por escena"]
+        IMG --> PAN["Panel de viñetas<br/>edición por escena"]
         PAN --> PDF["Exportar PDF<br/>storyboard profesional"]
         class USER,CFG ui
         class TXT,IMG engine
@@ -61,11 +61,11 @@ flowchart LR
 - **Tema visual**: Free Animation Power corporativo — fondo amarillo `#ffdc00`, cards blancas, acento naranja `#ff4200`, fuentes Outfit + Plus Jakarta Sans
 - **Idiomas**: Ingles, Español, Francés, Portugués — selector en vivo sin recargar
 - **IA Narrativa**: Multi-proveedor — API OpenAI-compatible generica + Gemini nativo
-- **Generacion Visual**: Multi-proveedor con fallback en cascada (Stability SD3, HF FLUX, DALL-E, Gemini Imagen, Pollinations gratis, Canvas placeholder)
-- **Exportacion**: jsPDF (CDN) — empaquetado 100% en el navegador del cliente
+- **Generación Visual**: Multi-proveedor con fallback en cascada (Stability SD3, HF FLUX, DALL-E, Gemini Imagen, Pollinations gratis, Canvas placeholder)
+- **Exportación**: jsPDF (CDN) — empaquetado 100% en el navegador del cliente
 - **Servidor**: Node.js unificado — estaticos + proxy texto + proxy imagenes. Soporte `multipart/form-data` para Stability AI.
 
-## Inicio rapido
+## Inicio rápido
 
 ```bash
 # 1. Iniciar servidor
@@ -124,7 +124,7 @@ de gama alta genera storyboards con calidad profesional.
 
 #### 1. Google Gemini — texto + imagenes (recomendado para empezar)
 
-**Una sola API key sirve para texto E imagenes.** Es la opcion mas completa
+**Una sola API key sirve para texto E imagenes.** Es la opción mas completa
 del tier gratuito.
 
 | Paso | Accion |
@@ -152,7 +152,7 @@ del tier gratuito.
 | 5 | En Storyboard AI: **API de Texto** > `Mistral AI`, modelo `mistral-large-latest` |
 
 **Limites gratuitos:** rate-limit generoso en tier gratuito (La Plateforme).
-**Calidad:** Excelente en JSON estructurado y textos multilingue. Muy rapido.
+**Calidad:** Excelente en JSON estructurado y textos multilingue. Muy rápido.
 
 ---
 
@@ -194,14 +194,14 @@ del tier gratuito.
 | 3 | Ve a **API Keys** > **Create API Key** (formato: `gsk_...`) |
 | 4 | En Storyboard AI: **API de Texto** > `Groq`, modelo `llama-3.3-70b-versatile` |
 
-**Limites:** ~30 req/minuto, ~1000/dia. Muy rapido.
+**Limites:** ~30 req/minuto, ~1000/dia. Muy rápido.
 
 ---
 
 #### 6. Pollinations.ai — imagenes (sin registro, sin key)
 
 No necesita API key. Selecciona `Pollinations.ai (gratis)` en el panel de imagen.
-Ilimitado pero lento (~30-120s por imagen). Util como fallback automatico.
+Ilimitado pero lento (~30-120s por imagen). Útil como fallback automático.
 
 ---
 
@@ -209,7 +209,7 @@ Ilimitado pero lento (~30-120s por imagen). Util como fallback automatico.
 
 #### OpenAI — GPT-4o + DALL-E 3
 
-Creditos prepago, minimo $5.
+Creditos prepago, mínimo $5.
 
 | Paso | Accion |
 |------|--------|
@@ -231,7 +231,7 @@ Creditos prepago, minimo $5.
 | 2 | Crea cuenta > **API Keys** > agrega saldo (~$2 min) |
 | 3 | Storyboard AI: Texto > `DeepSeek`, modelo `deepseek-chat` |
 
-**Costos:** ~$0.001 por generacion. Extremadamente barato. Comparable a GPT-4o.
+**Costos:** ~$0.001 por generación. Extremadamente barato. Comparable a GPT-4o.
 
 ---
 
@@ -282,7 +282,7 @@ Cada error indica exactamente que API fallo y el motivo:
 - `API de Texto (Gemini): Limite de uso alcanzado.`
 - `API de Imagenes (Stability AI SD3): sin respuesta. Cambiando a Pollinations...`
 
-Status en tiempo real durante generacion:
+Status en tiempo real durante generación:
 
 ```
 Imagen 1/8: Stability AI SD3
@@ -309,9 +309,9 @@ Completado. Imagenes: 6x Stability AI SD3, 2x Pollinations.ai
 
 Puerto configurable via variable de entorno `PORT` (defecto: 3000).
 
-## Documentacion Tecnica
+## Documentacion Técnica
 
-- [Informe Tecnico Storyboard AI](informes_pdf/04_Storyboard_AI.pdf) — Documento completo de arquitectura multi-proveedor, stack tecnologico, diagramas de flujo y especificaciones tecnicas del generador de storyboards con IA.
+- [Informe Técnico Storyboard AI](informes_pdf/04_Storyboard_AI.pdf) — Documento completo de arquitectura multi-proveedor, stack tecnologico, diagramas de flujo y especificaciones técnicas del generador de storyboards con IA.
 
 ---
 
