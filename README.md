@@ -41,17 +41,16 @@ prefiera, sin depender de un unico modelo.
 
 ```mermaid
 flowchart LR
-%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#ffdc00', 'primaryBorderColor': '#1a1a1a', 'primaryTextColor': '#1a1a1a', 'lineColor': '#ff4200', 'fontFamily': 'Segoe UI'}}}%%
     classDef ui fill:#ffdc00,stroke:#1a1a1a,color:#1a1a1a,stroke-width:2px;
     classDef engine fill:#ff4200,stroke:#1a1a1a,color:#ffffff,stroke-width:2px;
     classDef data fill:#1a1a1a,stroke:#ff4200,color:#ffffff,stroke-width:2px;
-    classDef ext fill:#ffffff,stroke:#1a1a1a,color:#1a1a1a,stroke-width:2px,stroke-dasharray:6 3;
-        USER["📝 Brief creativo<br/>idea + estilo + tono"] --> CFG["🔑 Configurar APIs<br/>tu propia key, sin servidor propio"]
-        CFG --> TXT["🤖 Proveedor de texto<br/>OpenAI · Gemini · DeepSeek<br/>HuggingFace + 5 más"]
-        TXT --> ESC["📋 Escenas estructuradas<br/>título · descripción · diálogo"]
-        ESC --> IMG["🎨 Proveedor de imagen<br/>DALL-E · SDXL + 8 más"]
-        IMG --> PAN["🖼️ Panel de viñetas<br/>edición por escena"]
-        PAN --> PDF["📄 Exportar PDF<br/>storyboard profesional"]
+    classDef ext fill:#ffffff,stroke:#1a1a1a,color:#1a1a1a,stroke-width:2px;
+        USER["Brief creativo<br/>idea + estilo + tono"] --> CFG["Configurar APIs<br/>tu propia key, sin servidor propio"]
+        CFG --> TXT["Proveedor de texto<br/>OpenAI · Gemini · DeepSeek<br/>HuggingFace + 5 mas"]
+        TXT --> ESC["Escenas estructuradas<br/>titulo · descripcion · dialogo"]
+        ESC --> IMG["Proveedor de imagen<br/>DALL-E · SDXL + 8 mas"]
+        IMG --> PAN["Panel de vinetas<br/>edicion por escena"]
+        PAN --> PDF["Exportar PDF<br/>storyboard profesional"]
         class USER,CFG ui
         class TXT,IMG engine
         class ESC,PAN data
