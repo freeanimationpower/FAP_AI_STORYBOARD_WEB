@@ -47,7 +47,7 @@ flowchart LR
     classDef ext fill:#ffffff,stroke:#1a1a1a,color:#1a1a1a,stroke-width:2px;
         USER["Brief creativo<br/>idea + estilo + tono"] --> CFG["Configurar APIs<br/>tu propia key, sin servidor propio"]
         CFG --> TXT["Proveedor de texto<br/>OpenAI · Gemini · DeepSeek<br/>HuggingFace + 5 mas"]
-        TXT --> ESC["Escenas estructuradas<br/>título · descripción · dialogo"]
+        TXT --> ESC["Escenas estructuradas<br/>título · descripción · diálogo"]
         ESC --> IMG["Proveedor de imagen<br/>DALL-E · SDXL + 8 mas"]
         IMG --> PAN["Panel de viñetas<br/>edición por escena"]
         PAN --> PDF["Exportar PDF<br/>storyboard profesional"]
@@ -102,7 +102,7 @@ Click en "Configurar APIs" > elegir proveedor > pegar API key > Guardar
 
 | Proveedor | Requiere key | Calidad | Tipo |
 |-----------|:---:|:---:|:---:|
-| Stability AI SD3 | Si | Muy alta | Gratis (25 creditos) |
+| Stability AI SD3 | Si | Muy alta | Gratis (25 créditos) |
 | Google Gemini Imagen | Si (Gemini key) | Muy alta | Gratis |
 | HuggingFace FLUX.1 Schnell | Si (HF Token) | Alta | Gratis |
 | HuggingFace FLUX.1 Dev | Si (HF Token) | Muy alta | Gratis |
@@ -112,7 +112,7 @@ Click en "Configurar APIs" > elegir proveedor > pegar API key > Guardar
 | Pollinations.ai | No | Media | Gratis |
 | Personalizado | Depende | Variable | — |
 
-## Guia de APIs: como obtener tus claves
+## Guía de APIs: como obtener tus claves
 
 La calidad del texto y de las imagenes generadas depende directamente del modelo
 que conectes. Un modelo gratuito basico produce resultados funcionales; uno pago
@@ -120,7 +120,7 @@ de gama alta genera storyboards con calidad profesional.
 
 ---
 
-### APIs GRATUITAS (sin tarjeta de credito)
+### APIs GRATUITAS (sin tarjeta de crédito)
 
 #### 1. Google Gemini — texto + imagenes (recomendado para empezar)
 
@@ -156,7 +156,7 @@ del tier gratuito.
 
 ---
 
-#### 3. Stability AI — imagenes (25 creditos gratis)
+#### 3. Stability AI — imagenes (25 créditos gratis)
 
 | Paso | Accion |
 |------|--------|
@@ -166,7 +166,7 @@ del tier gratuito.
 | 4 | Copia la key (formato: `sk-...`) |
 | 5 | En Storyboard AI: **API de Imagenes** > `Stability AI SD3` |
 
-**Limites gratuitos:** 25 creditos al registrarte. Cada imagen gasta ~0.3 creditos.
+**Limites gratuitos:** 25 créditos al registrarte. Cada imagen gasta ~0.3 créditos.
 **Calidad:** SD3 genera imagenes de muy alta calidad con excelente seguimiento del prompt.
 
 ---
@@ -209,7 +209,7 @@ Ilimitado pero lento (~30-120s por imagen). Útil como fallback automático.
 
 #### OpenAI — GPT-4o + DALL-E 3
 
-Creditos prepago, mínimo $5.
+Créditos prepago, mínimo $5.
 
 | Paso | Accion |
 |------|--------|
@@ -240,7 +240,7 @@ Creditos prepago, mínimo $5.
 | Paso | Accion |
 |------|--------|
 | 1 | Entra a [openrouter.ai](https://openrouter.ai/) |
-| 2 | Crea cuenta > **Keys** > agrega creditos ($5 min) |
+| 2 | Crea cuenta > **Keys** > agrega créditos ($5 min) |
 | 3 | Storyboard AI: Texto > `OpenRouter` |
 | 4 | Modelos recomendados: `openai/gpt-4o`, `anthropic/claude-3.5-sonnet`, `google/gemini-2.0-flash-001` |
 
@@ -270,7 +270,7 @@ Creditos prepago, mínimo $5.
 | HF SDXL Turbo | ★★★ | ★★ | Ilust/arte | Gratis |
 | Pollinations.ai | ★★ | ★ | Variable | Gratis |
 
-*25 creditos gratis al registrarse en Stability AI.
+*25 créditos gratis al registrarse en Stability AI.
 
 ---
 
